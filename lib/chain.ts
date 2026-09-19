@@ -7,18 +7,29 @@
 export const CHAIN_ID = 4663;
 export const RPC_URL = process.env.RPC_URL ?? "https://rpc.mainnet.chain.robinhood.com";
 
+import deployment from "../onchain/deployments/latest.json";
+
+/** Addresses come from the last `forge script script/Deploy.s.sol --broadcast` (onchain/deployments/latest.json). */
+export const DEPLOYMENT = deployment as {
+  chainId: number; stale?: boolean; deployer: string; owner: string; agent: string; guardrailConfig: string;
+  oracle: string; adapter: string; vault: string; executor: string; deskRegistry: string; registrySubject: string;
+  usdg: string; nvda: string; aapl: string; spy: string; block: number;
+};
+
 export const ADDR = {
-  vault: "0x0e500E390cC599055f1e54194e1e611Cf64c5047",
-  guardrailConfig: "0x68cf24994d0363Be7688e96B69dDacC290c766C0",
-  executor: "0xC1C00ED38A41a00Cbbf89be8A4552c1a16706AF7",
-  deskRegistry: "0x68cc84d722E2d613cAc36c62167B177656e2C983",
-  safe: "0x47b5e2923216f203b7960d8D232215534AF02FF2",
-  agent: "0xF4B68286ba3cDb4b26A4a3075765177111Cff661",
-  usdg: "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+  vault: DEPLOYMENT.vault,
+  guardrailConfig: DEPLOYMENT.guardrailConfig,
+  executor: DEPLOYMENT.executor,
+  deskRegistry: DEPLOYMENT.deskRegistry,
+  safe: DEPLOYMENT.owner,
+  agent: DEPLOYMENT.agent,
+  usdg: DEPLOYMENT.usdg,
+  oracle: DEPLOYMENT.oracle,
+  adapter: DEPLOYMENT.adapter,
 } as const;
 
-/** DeskRegistry subject seeded at deploy: subjectFor(deployer, keccak("aelix-vault:" ‖ vault)). */
-export const REGISTRY_SUBJECT = "0x970c5c41a5e7b41b93b98d8a7028b22b1b839218d30d014bd1da9c3d4eb85ac4";
+/** DeskRegistry subject seeded at deploy: subjectFor(deployer, keccak("sphynx-vault:" + vault)). */
+export const REGISTRY_SUBJECT = DEPLOYMENT.registrySubject;
 
 /** Stock Tokens on the vault allowlist (18 decimals, price-tracking, not shares). */
 export const STOCK_TOKENS: { ticker: string; address: string }[] = [
