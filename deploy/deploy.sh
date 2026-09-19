@@ -14,6 +14,7 @@ rsync -az --delete \
   --exclude node_modules --exclude .next --exclude .data --exclude .git \
   --exclude .DS_Store --exclude tsconfig.tsbuildinfo \
   --exclude 'VVVHOUND_*' \
+  --exclude onchain/lib --exclude onchain/out --exclude onchain/cache --exclude onchain/broadcast --exclude onchain/.env \
   "$HERE/" "$HOST:$APP_DIR/"
 
 echo "▸ building on server"
