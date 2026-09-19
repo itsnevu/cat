@@ -21,7 +21,7 @@ mkdir -p "$APP_DIR"
 cat > /etc/nginx/sites-available/sphynx <<NGX
 server {
     listen 80 default_server;
-    server_name sphynxagent.tech www.sphynxagent.tech;
+    server_name sphynxagent.xyz www.sphynxagent.xyz;
     client_max_body_size 8m;
     location / {
         proxy_pass http://127.0.0.1:${PORT};

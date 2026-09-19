@@ -47,7 +47,7 @@ export default function OpengraphImage() {
             color: "#E8B85A",
           }}
         >
-          sphynxagent.tech
+          sphynxagent.xyz
         </div>
       </div>
     ),

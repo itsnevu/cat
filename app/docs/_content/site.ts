@@ -3,10 +3,10 @@
 
 /**
  * Canonical origin for sitemap.xml, robots.txt, canonicals, OG and JSON-LD.
- * sphynxagent.tech is where the site is deployed (sphynx.ai is owned by an
+ * sphynxagent.xyz is where the site is deployed (sphynx.ai is owned by an
  * unrelated company); to move domains later, set NEXT_PUBLIC_SITE_URL.
  */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sphynxagent.tech").replace(/\/$/, "");
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sphynxagent.xyz").replace(/\/$/, "");
 export const DOCS_URL = `${SITE_URL}/docs`;
 
 export interface NavItem {

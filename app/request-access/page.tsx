@@ -6,7 +6,7 @@ import Link from "next/link";
 import { VAULT_URL } from "@/lib/links";
 import "../vx.css";
 
-const ACCESS_EMAIL = process.env.NEXT_PUBLIC_ACCESS_EMAIL || "access@sphynxagent.tech";
+const ACCESS_EMAIL = process.env.NEXT_PUBLIC_ACCESS_EMAIL || "access@sphynxagent.xyz";
 const EVM_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
 const ACCESS_WAVE = "Wave 01 review closes Friday, August 7, 2026";
 

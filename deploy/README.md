@@ -28,22 +28,22 @@ Node 20 + PM2 already exist on the server.
 
 ## 2. One-time: route the domain through Caddy (auto-HTTPS)
 
-DNS A records for `sphnyxagent.tech` and `www` already point at the server. Append the site to the Caddyfile once:
+DNS A records for `sphynxagent.xyz` and `www` already point at the server. Append the site to the Caddyfile once:
 
 ```bash
 ssh root@37.60.232.191
 cat >> /etc/caddy/Caddyfile <<'EOF'
 
-sphnyxagent.tech {
+sphynxagent.xyz {
     reverse_proxy 127.0.0.1:5190
     encode zstd gzip
 }
-www.sphnyxagent.tech {
-    redir https://sphnyxagent.tech{uri} permanent
+www.sphynxagent.xyz {
+    redir https://sphynxagent.xyz{uri} permanent
 }
 EOF
 caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
-curl -sI https://sphnyxagent.tech | head -1     # expect HTTP/2 200 after a few seconds
+curl -sI https://sphynxagent.xyz | head -1     # expect HTTP/2 200 after a few seconds
 ```
 
 ## Useful
