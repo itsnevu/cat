@@ -88,6 +88,11 @@ export async function POST(req: NextRequest) {
   };
 
   try {
+    // the same wallet+email inside ten minutes is a double-click, not a second request
+    const recent = (await readAccessRequests().catch(() => []))
+      .find((r) => (r.wallet ?? "").toLowerCase() === (record.wallet ?? "").toLowerCase() && r.email === record.email
+        && Date.now() - Date.parse(r.createdAt) < 10 * 60_000);
+    if (recent) return NextResponse.json({ ok: true, id: recent.id, duplicate: true });
     await writeAccessRequest(record);
   } catch (error) {
     if (error instanceof AccessRequestStorageError) {

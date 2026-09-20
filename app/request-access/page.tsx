@@ -284,7 +284,7 @@ export default function RequestAccessPage() {
             </span>
           </label>
 
-          <button className="vx-btn vx-btn-lime access-submit" type="submit" disabled={!canSubmit || submitting}>
+          <button className="vx-btn vx-btn-lime access-submit" type="submit" disabled={!canSubmit || submitting || submitted}>
             <span>{submitting ? "Saving request" : submitted ? "Request saved" : "Enter next access wave"}</span>
           </button>
 

@@ -90,8 +90,8 @@ export function SiteHeader() {
             <a href="/docs" className={cn(pathname?.startsWith("/docs") && "active")}>
               <span className="n">06</span> <ScrambleHover text="Docs" />
             </a>
-            <a href={REQUEST_ACCESS_URL} className="active" aria-label="Request access">
-              <span className="n">↗</span> <ScrambleHover text="Request Access" />
+            <a href="/trade" className="active" aria-label="Trade">
+              <span className="n">↗</span> <ScrambleHover text="Access Open · Trade" />
             </a>
           </nav>
           <button className="burger" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
@@ -117,8 +117,11 @@ export function SiteHeader() {
         <a href="/docs" onClick={() => setDrawer(false)}>
           <span className="n">06</span> <ScrambleHover text="Docs" />
         </a>
+        <a href="/trade" onClick={() => setDrawer(false)}>
+          <span className="n">↗</span> <ScrambleHover text="Access Open · Trade" />
+        </a>
         <a href={REQUEST_ACCESS_URL} onClick={() => setDrawer(false)}>
-          <span className="n">↗</span> <ScrambleHover text="Request Access" />
+          <span className="n">07</span> <ScrambleHover text="Request Access" />
         </a>
       </div>
 
