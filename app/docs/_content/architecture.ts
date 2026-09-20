@@ -367,186 +367,57 @@ export const content: DocContent = {
     },
     {
       type: "prose",
-      md: "Everything above is the equities desk. The `onchain/` module is a **different system** with a different trust model: a Foundry project where the risk caps written in `strategies/` are enforced by a contract instead of read by an agent. **Enforced, not promised.** The desk is how the rulebook is developed; the vault is how that rulebook becomes code. As of **2026-09-20 it is deployed to Robinhood Chain mainnet, chainId 4663**, against real periphery, there are no mocks in the mainnet path.",
+      md: "Everything above is the equities desk. The `onchain/` module is a **different system** with a different trust model: a Foundry project where the risk caps written in `strategies/` are enforced by a contract instead of read by an agent. **Enforced, not promised.** As of **2026-09-20** it is deployed to **Robinhood Chain mainnet, chainId 4663**, against real USDG and the real Uniswap V3 stock-token pools.",
     },
     {
       type: "prose",
-      md: "It is wired to the desk in **neither** direction: the desk's orders go through the Robinhood MCP and never touch a chain, and the vault holds no customer money. Deploying it changed what exists on chain, not what the desk is allowed to do, every order still needs your explicit in-session approval.",
+      md: "It is wired to the desk in **neither** direction: the desk's orders go through the Robinhood MCP and never touch a chain, and the vault's orders go through a Uniswap V3 pool and never touch a brokerage. Every desk order still needs your explicit in-session approval.",
     },
     {
       type: "callout",
       tone: "danger",
-      title: "Mainnet, unaudited, deposits capped",
-      md: "There is **no third-party audit.** Two internal audit passes and a 42-agent preflight review are **not** an audit. The contracts are **not yet verified on the block explorer.** Deposits are capped at **10,000 USDG**, TVL is **0**, and there are **no depositors, no trades, no returns, and no track record.** Read this section as a map of unaudited mainnet code, not as a product. See [Safety & Disclaimer](/docs/disclaimer).",
+      title: "Mainnet, unaudited, no timelock, deposits capped",
+      md: "No third-party audit. Owner changes land in one transaction. One EOA is owner and session holder at launch. Deposits are capped at **10,000 USDG**, NAV is **0**, and there are **no depositors, no trades, no returns, and no track record**. Read [Risks](/docs/risks) before depositing.",
     },
     {
-      type: "heading",
-      level: 3,
-      text: "Three layers of least privilege",
-    },
-    {
-      type: "prose",
-      md: "The module's shape is least-privilege layering: two independent mechanisms that each have to say yes before value moves, and one record that cannot be edited afterwards. Each layer would still hold if the layer above it failed.",
-    },
-    {
-      type: "deflist",
-      items: [
-        {
-          term: "Layer 1 — session scoping (SessionKeyExecutor)",
-          md: "The agent never holds a standing hot wallet. It trades through an **expiring session key** scoped by expiry, per-trade size, total spend budget, trade count, and a ticker allowlist. A rejected order spends **none** of that budget — the executor rolls its reservations back when the vault reverts. Sessions are granted and revoked by the owner, the 2-of-3 Safe; there is no per-depositor scoping, the session governs one pooled book.",
-        },
-        {
-          term: "Layer 2 — custody-layer caps (RWAVault + GuardrailConfig)",
-          md: "The risk caps are compiled into the vault, which **reverts any order that breaches them** — enforced at the custody layer on every order, changeable only by the 2-of-3 Safe, **with no delay yet: there is no timelock**, so a cap change the Safe signs takes effect in one transaction. `previewTrade()` returns the exact rule an order would break **before** anyone signs.",
-        },
-        {
-          term: "Layer 3 — the append-only record (DeskRegistry)",
-          md: "Attestations are append-only and chain-stamped: refusals and vetoes go on the record and **cannot be pruned**. That is why the first number this project intends to publish is **how often the vault said no** — the only metric honestly accumulable at TVL 0.",
-        },
+      type: "cards",
+      columns: 3,
+      cards: [
+        { title: "Trading Guide", badge: "USE", md: "Connect, fund, compose an order, read the vault's verdict, sign. [Open](/docs/trading)" },
+        { title: "The Vault", badge: "CUSTODY", md: "ERC-4626 over USDG; `previewTrade()` names the rule an order would break; exits that always work. [Open](/docs/vault)" },
+        { title: "Session Keys", badge: "AUTHZ", md: "Expiring, budgeted, ticker-scoped sessions; a refusal spends nothing. [Open](/docs/session-keys)" },
+        { title: "Oracle & Execution", badge: "PRICE", md: "5-minute Uniswap V3 TWAP with a deviation bound; typed adapter, no router. [Open](/docs/oracle)" },
+        { title: "Contracts", badge: "REF", md: "Addresses, ABIs, build and deploy. [Open](/docs/contracts)" },
+        { title: "Risks", badge: "READ FIRST", md: "What can go wrong, ranked, with what limits it today. [Open](/docs/risks)" },
       ],
     },
     {
-      type: "note",
-      md: "There are **no fees anywhere in the contracts** — no management fee, no performance fee, no carry. The exit fee accrues to **remaining holders**, not the operator. Shares are always redeemable **in kind**: a pro-rata slice of cash and tokens, minus the exit fee; cash-only redemption is limited to the vault's USDG on hand.",
-    },
-    {
-      type: "heading",
-      level: 3,
-      text: "Deployed addresses",
-    },
-    {
-      type: "prose",
-      md: "Each address below was confirmed on 2026-09-20 by calling an identifying function on the deployed contract, not copied from a docs table. They mirror `onchain/deployments/latest.json`.",
+      type: "diagram",
+      title: "Three layers of least privilege",
+      ascii: `AGENT KEY ──execute(trade)──▶ SessionKeyExecutor   expiry · per-trade · budget · count · side · ticker
+                                     │
+                                     ▼
+                              RWAVault (vSPHYNX)    previewTrade() == None or revert GuardrailBreach(rule)
+                                     │              caps from GuardrailConfig · owner-changeable within hard ceilings
+                                     ▼
+                              UniswapV3Adapter      one registered USDG pool per token · no router · minAmountOut
+                                     │
+                              Uniswap V3 pool       also the price source: 5m TWAP, 3% spot-deviation bound
+
+DeskRegistry                  append-only attestations · refusals and vetoes go on the record`,
     },
     {
       type: "table",
-      caption: "Robinhood Chain mainnet, chainId 4663. Verified by direct on-chain call.",
-      headers: ["Contract", "Address (chainId 4663)", "Role"],
+      caption: "Robinhood Chain mainnet, chainId 4663, block 26,015,235. Mirrors onchain/deployments/latest.json.",
+      headers: ["Contract", "Address"],
       rows: [
-        [
-          "Owner (deployer EOA, Safe handover pending)",
-          "`0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a`",
-          "The owner of the whole stack, two of three signers required for any owner action — **with no timelock yet**: a change the Safe signs takes effect in one transaction. The handover **completed on 2026-09-20**, see below.",
-        ],
-        [
-          "RWAVault (`vSPHYNX`)",
-          "`0x510Af4fC7fA571e5549258541a9374dE3D894F28`",
-          "ERC-4626 vault over USDG for tokenized real-world assets. 12 decimals (6 from USDG plus a 1e6 offset that defeats the ERC-4626 inflation attack). Deposit cap **10,000 USDG** — an owner-changeable setting, not structural. Current state: `totalAssets` 0, `totalSupply` 0, not paused, 5 tokens allowlisted.",
-        ],
-        [
-          "GuardrailConfig",
-          "`0x7Ec7A870361E75A44E5549b57Cd437742e509be2`",
-          "The caps as state, not prose: the on-chain store of the risk limits from `CLAUDE.md` and [`strategies/`](/docs/strategies). Some ceilings (e.g. the sell-tolerance cap) cannot be widened even by the owner; the rest are owner-changeable by the Safe, with **no timelock yet**.",
-        ],
-        [
-          "UniswapV3Oracle",
-          "`0xBf4fbd55eB70DC6424d839B9F6fDbc693A63cCe5`",
-          "Prices the vault reads for NAV and for the trade path, with two-tier staleness bounds, a circuit breaker for splits and corporate actions, and the chain-liveness quorum below.",
-        ],
-        [
-          "DeskRegistry",
-          "`0x685915EB0226757bFeae58c5f5BdD3f5F493Eac4`",
-          "Append-only, chain-stamped attestation log for a desk. The on-chain counterpart of `logs/*.jsonl`. Currently empty.",
-        ],
-        [
-          "UniswapV3Adapter",
-          "`0x18bdc0EE9C2d33eeAbC5fe422126310cf3df13bC`",
-          "The vault's only execution surface: a narrow, typed swap over Uniswap V2 Router02, so a manager can never redirect a swap into an arbitrary contract call.",
-        ],
-        [
-          "SessionKeyExecutor",
-          "`0x87a6F83D1375401e1BfFca9e8055228033788713`",
-          "The authorization layer between the AI desk and the vault: expiring session keys scoped by expiry, size, budget, trade count and ticker, instead of a standing hot wallet. A rejected order spends none of the session budget.",
-        ],
+        ["RWAVault (vSPHYNX)", "`0x510Af4fC7fA571e5549258541a9374dE3D894F28`"],
+        ["SessionKeyExecutor", "`0x87a6F83D1375401e1BfFca9e8055228033788713`"],
+        ["GuardrailConfig", "`0x7Ec7A870361E75A44E5549b57Cd437742e509be2`"],
+        ["UniswapV3Oracle", "`0xBf4fbd55eB70DC6424d839B9F6fDbc693A63cCe5`"],
+        ["UniswapV3Adapter", "`0x18bdc0EE9C2d33eeAbC5fe422126310cf3df13bC`"],
+        ["DeskRegistry", "`0x685915EB0226757bFeae58c5f5BdD3f5F493Eac4`"],
       ],
-    },
-    {
-      type: "note",
-      md: "Stop-loss, precisely: the **live** vault requires a stop below entry on every buy. The stop-**depth** cap — a buy's stop must sit within `stopLossBps` of price, so a nominal $0.01 \"stop\" fails — is enforced in the current repo code with a regression test and ships with the next deploy. It is **not** a property of the live vault today.",
-    },
-    {
-      type: "heading",
-      level: 3,
-      text: "Real periphery, verified by call",
-    },
-    {
-      type: "deflist",
-      items: [
-        {
-          term: "USDG, the 6-decimal original",
-          md: "`0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168`, `decimals()` **6**, `symbol()` `USDG`, `name()` `Global Dollar`. An **18-decimal look-alike exists on the same chain**, so the deploy gate pins USDG decimals to 6 and rejects the impostor without ever trusting a symbol.",
-        },
-        {
-          term: "Uniswap V2 Router02",
-          md: "`0x89e5db8b5aa49aa85ac63f691524311aeb649eba`. Identity cross-confirmed because its `WETH()` returns the documented WETH for the chain.",
-        },
-        {
-          term: "Five allowlisted Stock Tokens",
-          md: "NVDA, AAPL, TSLA, GOOGL, SPY, all 18 decimals, all exposing `oraclePaused()` and ERC-8056 `uiMultiplier()`. Matching is by **contract address, never by symbol**, the chain also hosts unrelated tokens with confusable tickers.",
-        },
-        {
-          term: "One Chainlink feed proxy per token",
-          md: "Every equity feed is **8 decimals, 86400s (24h) heartbeat, 0.5% deviation threshold**. The oracle returns live prices, NVDA read **$206.37** at deploy time. Wire the **proxy**, not the aggregator.",
-        },
-        {
-          term: "Test suite",
-          md: "**215 tests passing** in `onchain/test/`, including the regression test pinning the stop-depth cap. Tests are evidence about the code's own invariants, not a substitute for a third-party audit.",
-        },
-      ],
-    },
-    {
-      type: "heading",
-      level: 3,
-      text: "No sequencer uptime feed: the chain-liveness quorum",
-    },
-    {
-      type: "prose",
-      md: "The standard L2 pattern is to read a Chainlink **sequencer uptime feed** and refuse to price while the sequencer is down. That feed **does not exist here**: Chainlink's reference directory for Robinhood Chain carries 56 feeds and **zero** uptime entries, and the chain is absent from Chainlink's L2 sequencer-feeds page.",
-    },
-    {
-      type: "prose",
-      md: "So the adapter substitutes a **chain-liveness quorum** (`ChainlinkOracleAdapter.livenessRefs`): at least two **24/7 crypto** feeds act as witnesses. Crypto feeds publish around the clock while equity feeds are 24/5, which is exactly the discriminator a plain staleness check lacks, one fresh witness proves the chain is producing blocks and the oracle network is delivering, so a stale equity feed just means a closed session. If **every** witness is stale, the vault fails closed with `ChainLivenessStale`. The gate refuses a deploy that has neither a real uptime feed nor a quorum, and `SEQUENCER_FEED` stays wired for the day one appears.",
-    },
-    {
-      type: "callout",
-      tone: "warn",
-      title: "The quorum is coarse by design, not equivalent",
-      md: "It catches **multi-hour outages, not minute-scale ones.** Do not read it as a replacement for a sequencer uptime feed. Post-recovery protection comes from the **per-feed staleness bound** instead: a trade cannot execute until the equity feed itself publishes a fresh round.",
-    },
-    {
-      type: "heading",
-      level: 3,
-      text: "Ownership: the two-step handover, complete",
-    },
-    {
-      type: "prose",
-      md: "The contracts use `Ownable2Step`, so a transfer only completes when the new owner calls `acceptOwnership()`. **That handover is now finished.** On **2026-09-20** the 2-of-3 Safe accepted ownership of the vault, the oracle adapter and the session-key executor in a single batch (tx `0x1ee7a73e7c3df216579554cd3d5993dfeee6be2bd081a68f59700efbd5968cea`). Read back by direct `eth_call` after execution, all three return the Safe from `owner()` and the zero address from `pendingOwner()`, so the transfer is settled, not half-done. Per contract:",
-    },
-    {
-      type: "table",
-      caption: "Ownership as read on chain after the handover, 2026-09-20. Safe = 0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a.",
-      headers: ["Contract", "`owner()` today", "How it got there"],
-      rows: [
-        ["GuardrailConfig", "the Safe", "Safe-owned **from construction**, it never passed through the deploy key at all."],
-        ["UniswapV3Adapter", "the Safe", "Safe-owned **from construction**, same as above."],
-        ["RWAVault", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
-        ["UniswapV3Oracle", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
-        ["SessionKeyExecutor", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
-      ],
-    },
-    {
-      type: "prose",
-      md: "The negative control was checked too, not just the positive one. The deployer EOA `0xeC68f3c2f23c11Eb7Ca77322b4E66d23492B5c51` now reverts with `OwnableUnauthorizedAccount` (`0x118cdaa7`) on `allowToken`, `setDepositCap` and `setFeedFrozen`, while the same calls from the Safe address succeed. The deploy key retains no authority over any contract in the stack.",
-    },
-    {
-      type: "callout",
-      tone: "info",
-      title: "What multisig ownership does, and does not, buy",
-      md: "Every owner-controlled contract in the stack is owned by the 2-of-3 Safe, so changing a risk cap, a price feed, the deposit cap or a session grant requires **two of three signatures**, and no single hot key can weaken the guardrails. **There is no timelock yet:** a change the Safe approves takes effect in one transaction, with no delay for anyone to react. And multisig custody is a statement about **custody, not about code**: it does not make the contracts audited or verified on the explorer. The audit is still the caveat that matters most.",
-    },
-    {
-      type: "note",
-      md: "The on-chain module remains a **direction**, gated behind a third-party audit, explorer verification, and legal/securities review. The US-person question is unresolved and the `$SPHYNX` token is **not built**. Scope in full: [Safety & Disclaimer](/docs/disclaimer).",
     },
     {
       type: "divider",

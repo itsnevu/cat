@@ -17,7 +17,7 @@ export function Roadmap() {
           <p>
             Built in phases. Every desk trading feature ships behind human approval first,
             paper-trading second. The on-chain module is deployed on Robinhood Chain
-            mainnet and its ownership sits with a 2-of-3 Safe multisig — with no timelock
+            mainnet and its ownership sits with a single key today, a Safe is next — with no timelock
             yet — while third-party audit, explorer verification and legal review are
             still open.
           </p>

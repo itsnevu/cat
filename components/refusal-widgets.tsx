@@ -122,19 +122,21 @@ export function KeyStatus() {
         <span className="vx-key__v">{bps(d.caps.perTradeBps)}</span>
         <span className="vx-key__l">per-trade cap, from the vault</span>
       </div>
-      <span className="vx-key__foot">live · {d.session.active ? "session active" : "no session"} · zero-limit placeholder today · read the rest ↗</span>
+      <span className="vx-key__foot">live · {d.session.active ? "session active" : "no session"} · live session · read the rest ↗</span>
     </a>
   );
 }
 
 /* ── the contracts, with explorer links — "read the rules yourself" ──────── */
-const EXPLORER = "https://explorer.mainnet.chain.robinhood.com/address/";
+const EXPLORER = "https://robinhoodchain.blockscout.com/address/";
 const ROWS: [string, keyof typeof ADDR, string][] = [
   ["RWAVault (vSPHYNX)", "vault", "reverts any swap that breaks a cap"],
   ["GuardrailConfig", "guardrailConfig", "the caps, compiled"],
   ["SessionKeyExecutor", "executor", "the agent's scoped, expiring key"],
   ["DeskRegistry", "deskRegistry", "append-only record of runs & refusals"],
-  ["Safe 2-of-3", "safe", "owns every owner-controlled contract"],
+  ["UniswapV3Oracle", "oracle", "5m TWAP mark + 3% deviation bound"],
+  ["UniswapV3Adapter", "adapter", "the only execution surface"],
+  ["Owner", "safe", "single key today; Safe handover planned"],
 ];
 export function ContractStrip() {
   return (

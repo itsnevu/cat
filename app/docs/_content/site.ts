@@ -25,6 +25,7 @@ export const DOCS_NAV: NavGroup[] = [
     group: "Start Here",
     items: [
       { slug: "", label: "Overview" },
+      { slug: "whitepaper", label: "Whitepaper" },
       { slug: "quickstart", label: "Quickstart" },
       { slug: "setup", label: "Installation & Setup" },
     ],
@@ -53,6 +54,17 @@ export const DOCS_NAV: NavGroup[] = [
       { slug: "dashboard", label: "Dashboard" },
       { slug: "backtesting", label: "Backtester" },
       { slug: "logging", label: "Audit Logging" },
+    ],
+  },
+  {
+    group: "On-Chain",
+    items: [
+      { slug: "trading", label: "Trading Guide" },
+      { slug: "vault", label: "The Vault" },
+      { slug: "session-keys", label: "Session Keys" },
+      { slug: "oracle", label: "Oracle & Execution" },
+      { slug: "contracts", label: "Contracts Reference" },
+      { slug: "risks", label: "Risks" },
     ],
   },
   {

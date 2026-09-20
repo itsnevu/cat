@@ -11,7 +11,7 @@ type ChainData = {
   addr: Record<string, string>;
 };
 
-const EXPLORER = "https://explorer.mainnet.chain.robinhood.com/address/";
+const EXPLORER = "https://robinhoodchain.blockscout.com/address/";
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
 
 function useChain() {
@@ -101,7 +101,7 @@ export function RefusalsBoard() {
           </Reveal>
           <p className="eyebrow" style={{ marginTop: 18 }}>
             {err ? `CHAIN UNREACHABLE · ${err}` : data ? `READ ${new Date(data.at).toLocaleTimeString()} · REFRESHES EVERY 45S` : "READING…"}
-            {" · "}TVL 0 · NO DEPOSITORS · NOTHING ATTESTED YET · UNAUDITED
+            {" · "}UNAUDITED · NO TIMELOCK · TRADE AT /TRADE
           </p>
           {data && data.registry.latest.length > 0 && (
             <div className="term" style={{ marginTop: 28, padding: 20, minHeight: 0 }}>
@@ -127,7 +127,7 @@ export function RefusalsBoard() {
             <p>
               These are the caps the vault enforces on every swap — read live from{" "}
               {data ? <a href={EXPLORER + data.addr.guardrailConfig} target="_blank" rel="noreferrer" style={{ textDecoration: "underline" }}>{short(data.addr.guardrailConfig)}</a> : "the contract"},
-              not from our copy. Changing one takes 2-of-3 Safe signatures; there is no timelock yet.
+              not from our copy. Only the owner can change one, within hard ceilings; there is no timelock yet.
             </p>
           </div>
           <div className="guards">
