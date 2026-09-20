@@ -52,6 +52,9 @@ export function DocsTopbar() {
           </Link>
 
           <div className="docs-topbar-actions">
+            <Link href="/trade" className="docs-top-link">
+              Trade ↗
+            </Link>
             <Link href="/" className="docs-top-link">
               ← Site
             </Link>
