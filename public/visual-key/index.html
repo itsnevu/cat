@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SPHYNX Visual Key</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #1E1610; --panel: #2A1F16; --panel-2: #36291D; --paper: #19120C;
+    --sand: #E8B85A; --sand-2: #F3D48A; --sand-3: #A67C33;
+    --ink: #F3E9D2; --ink-2: rgba(243,233,210,.62); --ink-soft: rgba(243,233,210,.40);
+    --terra: #E2664A; --amber: #F5A742;
+    --hair: rgba(243,233,210,.12); --hair-hi: rgba(243,233,210,.18);
+    --serif: "Cormorant Garamond", Georgia, serif; --sans: "Instrument Sans", system-ui, sans-serif;
+    --mono: "Space Mono", ui-monospace, monospace; --pixel: "Press Start 2P", monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
+  .sheet { width: 1600px; margin: 0 auto; }
+  section.board { width: 1600px; min-height: 900px; padding: 64px 72px; border-bottom: 1px solid var(--hair); position: relative; overflow: hidden; background: var(--bg); }
+  .eyebrow { font-family: var(--pixel); font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--sand); }
+  .eyebrow.dim { color: var(--ink-soft); }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: 88px; line-height: .95; letter-spacing: -.01em; margin: 18px 0 0; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 56px; line-height: 1; margin: 14px 0 0; }
+  h3 { font-family: var(--serif); font-weight: 500; font-size: 26px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: .02em; }
+  p { color: var(--ink-2); font-size: 16px; line-height: 1.65; max-width: 720px; }
+  .mono { font-family: var(--mono); font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+  .grid { display: grid; gap: 22px; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); } .g6 { grid-template-columns: repeat(6, 1fr); }
+  .card { background: var(--panel); border: 1px solid var(--hair); border-radius: 16px; padding: 22px; box-shadow: 0 12px 40px rgba(0,0,0,.35); }
+  .num { position: absolute; top: 64px; right: 72px; font-family: var(--pixel); font-size: 11px; letter-spacing: .3em; color: var(--ink-soft); }
+  .foot { position: absolute; bottom: 40px; left: 72px; right: 72px; display: flex; justify-content: space-between; font-family: var(--pixel); font-size: 9px; letter-spacing: .24em; color: var(--ink-soft); text-transform: uppercase; }
+  .diamond { width: 9px; height: 9px; background: var(--sand); transform: rotate(45deg); display: inline-block; box-shadow: 0 0 10px rgba(232,184,90,.7); margin-right: 10px; }
+  .pill { font-family: var(--pixel); font-size: 9px; letter-spacing: .2em; padding: 8px 12px; border: 1px solid var(--hair-hi); border-radius: 100px; color: var(--ink-2); display: inline-block; margin: 0 6px 6px 0; text-transform: uppercase; }
+
+  /* dune backdrop for hero board */
+  .dunes { position: absolute; inset: 0; background:
+    radial-gradient(1200px 500px at 50% 110%, rgba(232,184,90,.55), transparent 60%),
+    radial-gradient(800px 380px at 20% 100%, rgba(166,124,51,.55), transparent 60%),
+    radial-gradient(900px 300px at 85% 95%, rgba(243,212,138,.35), transparent 60%),
+    linear-gradient(180deg, #120C08 0%, #1E1610 45%, #3A2A17 100%); }
+  .stars { position: absolute; inset: 0; background-image: radial-gradient(rgba(243,233,210,.55) 1px, transparent 1.5px); background-size: 140px 140px; opacity: .35; mask-image: linear-gradient(180deg, #000 0%, transparent 70%); -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 70%); }
+  .horizon { position: absolute; left: 0; right: 0; bottom: 0; height: 42%; background:
+    linear-gradient(180deg, transparent, rgba(232,184,90,.25) 30%, rgba(232,184,90,.55)); mix-blend-mode: screen; }
+  .sphinxsil { position: absolute; right: 14%; bottom: 20%; width: 520px; height: 300px; opacity: .55; }
+  .grain { position: absolute; inset: 0; opacity: .12; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* swatches */
+  .sw { border-radius: 14px; padding: 18px; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid var(--hair); }
+  .sw b { font-family: var(--pixel); font-size: 9px; letter-spacing: .2em; display: block; margin-bottom: 8px; }
+  .sw span { font-family: var(--mono); font-size: 12px; opacity: .85; }
+
+  /* type specimens */
+  .spec { border-top: 1px solid var(--hair); padding: 18px 0; display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: baseline; }
+  .spec .l { font-family: var(--pixel); font-size: 9px; letter-spacing: .2em; color: var(--ink-soft); text-transform: uppercase; }
+
+  /* storyboard frames */
+  .frame { background: var(--paper); border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; }
+  .frame .art { aspect-ratio: 16/9; position: relative; overflow: hidden; }
+  .frame .cap { padding: 16px 18px; }
+  .frame .cap b { font-family: var(--pixel); font-size: 9px; letter-spacing: .2em; color: var(--sand); display: block; margin-bottom: 8px; }
+  .frame .cap p { font-size: 13.5px; margin: 0 0 8px; line-height: 1.5; }
+  .frame .cap .mono { font-size: 10.5px; color: var(--ink-soft); }
+  .tc { position: absolute; top: 10px; left: 12px; font-family: var(--mono); font-size: 10px; color: var(--ink-soft); }
+  .lbl { position: absolute; bottom: 10px; left: 12px; right: 12px; font-family: var(--pixel); font-size: 8px; letter-spacing: .2em; color: var(--sand); text-transform: uppercase; text-shadow: 0 0 10px rgba(0,0,0,.8); }
+
+  /* generic art helpers */
+  .a-dune { background: radial-gradient(700px 260px at 50% 120%, rgba(232,184,90,.6), transparent 60%), linear-gradient(180deg, #120C08, #1E1610 50%, #3A2A17); }
+  .a-ui { background: #1E1610; }
+  .a-term { background: #191B20; }
+  .verdict { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); border-radius: 12px; padding: 14px 18px; display: flex; gap: 12px; align-items: center; font-family: var(--pixel); font-size: 10px; letter-spacing: .18em; }
+  .verdict.pass { background: rgba(232,184,90,.12); border: 1px solid rgba(232,184,90,.6); color: var(--sand); }
+  .verdict.fail { background: rgba(226,102,74,.12); border: 1px solid rgba(226,102,74,.6); color: var(--terra); }
+  .verdict i { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-style: normal; color: #1E1610; }
+  .verdict.pass i { background: var(--sand); } .verdict.fail i { background: var(--terra); }
+
+  .prompt { background: rgba(0,0,0,.28); border: 1px solid var(--hair-hi); border-radius: 12px; padding: 16px 18px; font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--ink); white-space: pre-wrap; }
+  .prompt .k { color: var(--sand); }
+  .neg { color: var(--terra); }
+  .tl { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; }
+  .tl div { padding: 14px; border-right: 1px solid var(--hair); font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+  .tl div:last-child { border-right: 0; }
+  .tl b { display: block; font-family: var(--pixel); font-size: 9px; letter-spacing: .18em; color: var(--sand); margin-bottom: 8px; }
+  .bar { height: 6px; background: linear-gradient(90deg, #120C08, var(--sand-3) 40%, var(--sand) 75%, var(--terra)); border-radius: 3px; margin: 12px 0 8px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<!-- ═══════════════ 01 HERO / IDENTITY ═══════════════ -->
+<section class="board" id="b01">
+  <div class="dunes"></div><div class="stars"></div><div class="horizon"></div>
+  <svg class="sphinxsil" viewBox="0 0 520 300" fill="#E8B85A">
+    <!-- great sphinx, profile facing left: nemes headdress, face, chest, back, haunches, forepaws -->
+    <polygon points="118,86 150,52 196,44 226,60 236,96 226,128 200,144 176,146 152,160 128,150 112,120" opacity=".95"/>
+    <polygon points="112,120 84,150 92,190 128,178 128,150" opacity=".7"/>
+    <polygon points="176,146 200,144 232,168 238,300 62,300 60,224 92,190 128,178 152,160" opacity=".9"/>
+    <polygon points="232,168 300,158 400,150 470,160 500,190 500,300 238,300" opacity=".82"/>
+    <polygon points="20,300 20,250 62,224 60,300" opacity=".85"/>
+    <polygon points="196,44 226,60 236,96 246,72 224,40" opacity=".55"/>
+    <polygon points="300,158 400,150 470,160 410,120 340,126" opacity=".45"/>
+  </svg>
+  <div class="grain"></div>
+  <div style="position:relative">
+    <span class="eyebrow">◆ Visual key · SPHYNX · v1 · September 2026</span>
+    <h1 style="font-size:150px;margin-top:26px;letter-spacing:.06em;text-shadow:0 0 60px rgba(232,184,90,.35)">SPHYNX</h1>
+    <p style="font-family:var(--serif);font-size:30px;line-height:1.3;max-width:900px;color:var(--ink);margin-top:22px">Markets never close now. Neither does the gatekeeper.</p>
+    <p style="max-width:760px;margin-top:18px">A hairless cat in gold pixels sits before a low-poly desert at golden hour, in front of the Great Sphinx. It asks every order a riddle. This document is the reference for anything visual: site, video, social, motion. Every colour, font, mood and frame here is already live on the site.</p>
+    <div style="margin-top:34px">
+      <span class="pill">Low-poly desert diorama</span><span class="pill">Golden hour, night sky</span><span class="pill">Pixel mascot on dot-grid</span><span class="pill">Serif display, pixel labels</span><span class="pill">Gold = yes · Terracotta = no</span>
+    </div>
+  </div>
+  <div class="num">01 / 08</div>
+  <div class="foot"><span>sphynxagent.xyz</span><span>identity</span></div>
+</section>
+
+<!-- ═══════════════ 02 PALETTE ═══════════════ -->
+<section class="board" id="b02">
+  <span class="eyebrow dim">02 · Palette</span>
+  <h2>Sand gold on a night dune.</h2>
+  <p>Two accents only. Gold means allowed, lit, live, yes. Terracotta means refused, veto, danger, sell. Nothing else is coloured. Every surface is a warm brown-black, never neutral grey.</p>
+  <div class="grid g6" style="margin-top:34px">
+    <div class="sw" style="background:#1E1610"><b style="color:var(--ink-2)">BG · night dune</b><span>#1E1610</span></div>
+    <div class="sw" style="background:#19120C"><b style="color:var(--ink-2)">PAPER · deep</b><span>#19120C</span></div>
+    <div class="sw" style="background:#2A1F16"><b style="color:var(--ink-2)">PANEL</b><span>#2A1F16</span></div>
+    <div class="sw" style="background:#36291D"><b style="color:var(--ink-2)">PANEL 2</b><span>#36291D</span></div>
+    <div class="sw" style="background:#191B20"><b style="color:var(--ink-2)">TERMINAL</b><span>#191B20</span></div>
+    <div class="sw" style="background:#F3E9D2;color:#1E1610"><b>INK · cream</b><span style="opacity:.7">#F3E9D2</span></div>
+  </div>
+  <div class="grid g6" style="margin-top:22px">
+    <div class="sw" style="background:#E8B85A;color:#1E1610"><b>SAND GOLD · yes</b><span style="opacity:.7">#E8B85A</span></div>
+    <div class="sw" style="background:#F3D48A;color:#1E1610"><b>PALE SAND</b><span style="opacity:.7">#F3D48A</span></div>
+    <div class="sw" style="background:#A67C33;color:#F3E9D2"><b>DEEP SAND · eyes</b><span>#A67C33</span></div>
+    <div class="sw" style="background:#F5A742;color:#1E1610"><b>SUNSET AMBER · warn</b><span style="opacity:.7">#F5A742</span></div>
+    <div class="sw" style="background:#E2664A;color:#1E1610"><b>TERRACOTTA · no</b><span style="opacity:.7">#E2664A</span></div>
+    <div class="sw" style="background:linear-gradient(180deg,#120C08,#1E1610 45%,#3A2A17)"><b style="color:var(--sand)">SKY → DUNE</b><span>#120C08 → #3A2A17</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:34px">
+    <div class="card"><h3>Light</h3><p style="font-size:14px">Golden hour from below the horizon. Warm rim light on every edge. Glow, not bloom: <span class="mono">0 0 24px rgba(232,184,90,.22)</span>. Sky stays dark with faint stars.</p></div>
+    <div class="card"><h3>Surface</h3><p style="font-size:14px">Film grain at 8–12%. Hairlines at 12% cream. Cards 16px radius, one soft shadow. No glass, no neon, no chrome.</p></div>
+    <div class="card"><h3>Ratio</h3><p style="font-size:14px">90% dark surface · 8% cream text · 2% gold. Terracotta appears only when something is refused.</p></div>
+  </div>
+  <div class="num">02 / 08</div>
+  <div class="foot"><span>palette</span><span>gold = yes · terracotta = no</span></div>
+</section>
+
+<!-- ═══════════════ 03 TYPOGRAPHY ═══════════════ -->
+<section class="board" id="b03">
+  <span class="eyebrow dim">03 · Typography</span>
+  <h2>A serif that carves, a pixel that labels.</h2>
+  <div style="margin-top:30px">
+    <div class="spec"><span class="l">Display · Cormorant Garamond 500</span><div style="font-family:var(--serif);font-size:96px;line-height:1;letter-spacing:.04em">THE SPHINX SAID NO.</div></div>
+    <div class="spec"><span class="l">Title · Cormorant 500 · caps</span><div style="font-family:var(--serif);font-size:48px;line-height:1;text-transform:uppercase">Rules carved in stone</div></div>
+    <div class="spec"><span class="l">Lede · Cormorant 400 italic</span><div style="font-family:var(--serif);font-size:30px;font-style:italic;color:var(--ink-2)">Every swap answers the riddle first.</div></div>
+    <div class="spec"><span class="l">Body · Instrument Sans 400</span><div style="font-size:17px;line-height:1.65;color:var(--ink-2);max-width:820px">Tokenized stocks through an ERC-4626 vault that reverts any order breaching its written caps. Compose an order and the vault tells you its verdict before you sign.</div></div>
+    <div class="spec"><span class="l">Label · Press Start 2P · .24em</span><div class="eyebrow" style="font-size:11px">// WE PUBLISH OUR NO'S · LIVE FROM CHAIN 4663</div></div>
+    <div class="spec"><span class="l">Data · Space Mono</span><div class="mono" style="font-size:15px;color:var(--ink)">previewTrade(NVDA, buy, 1500 USDG, stop=yes) → <span style="color:var(--terra)">REFUSED · PerTradeCap</span></div></div>
+    <div class="spec"><span class="l">Numbers · Cormorant tabular</span><div style="font-family:var(--serif);font-size:64px;font-variant-numeric:tabular-nums;line-height:1">$222.28 <span style="font-size:24px;color:var(--ink-soft)">USDG · NVDA · TWAP 5m</span></div></div>
+  </div>
+  <div class="num">03 / 08</div>
+  <div class="foot"><span>typography</span><span>serif display · sans body · pixel labels · mono data</span></div>
+</section>
+
+<!-- ═══════════════ 04 MASCOT ═══════════════ -->
+<section class="board" id="b04">
+  <span class="eyebrow dim">04 · Mascot</span>
+  <h2>The cat on the dot-grid.</h2>
+  <p>22×24 cells, 3px gap, 3px corner radius, drawn bottom-up like a terminal booting. Eyes are deep sand, never black. It sits; it never walks, never talks, never emotes beyond the eyes. It is the gatekeeper, not a pet.</p>
+  <div class="grid g4" style="margin-top:34px">
+    <div class="card" style="text-align:center"><div id="cat-idle"></div><b class="eyebrow" style="display:block;margin-top:14px">IDLE · lit · glow</b><p style="font-size:13px;margin:8px auto 0">Default. Full gold, soft glow.</p></div>
+    <div class="card" style="text-align:center"><div id="cat-boot"></div><b class="eyebrow" style="display:block;margin-top:14px">BOOT · 40%</b><p style="font-size:13px;margin:8px auto 0">Cells light row by row from the paws. Unlit cells stay at 14%.</p></div>
+    <div class="card" style="text-align:center"><div id="cat-yes"></div><b class="eyebrow" style="display:block;margin-top:14px">PASS · brighter glow</b><p style="font-size:13px;margin:8px auto 0">Glow expands, eyes go pale sand. Hold 300ms.</p></div>
+    <div class="card" style="text-align:center"><div id="cat-no"></div><b class="eyebrow" style="display:block;margin-top:14px;color:var(--terra)">REFUSED · terracotta</b><p style="font-size:13px;margin:8px auto 0">Whole cat flips terracotta for 600ms, then back. Eyes stay deep sand.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:26px">
+    <div class="card"><h3>Do</h3><p style="font-size:14px">Keep it small and still. Let the glow do the acting. Place it at the start of a data line like a prompt cursor. Pair it with the pixel label, never with body text.</p></div>
+    <div class="card"><h3>Don't</h3><p style="font-size:14px">No smoothing, no 3D, no fur, no outline, no gradient inside the cells, no rotation, no walking cycle, no speech bubble. Never white, never black. Never a real cat photo.</p></div>
+  </div>
+  <div class="num">04 / 08</div>
+  <div class="foot"><span>mascot</span><span>bottom-up boot · gold / terracotta only</span></div>
+</section>
+
+<!-- ═══════════════ 05 WORLD ═══════════════ -->
+<section class="board" id="b05">
+  <span class="eyebrow dim">05 · World</span>
+  <h2>A desert that never sleeps.</h2>
+  <p>The hero is a low-poly diorama: faceted dunes, a Great Sphinx silhouette, pyramids as background triangles, a lake that reflects gold. Sky is night, horizon is golden hour. Camera drifts slowly; nothing ever cuts fast. Birds in silhouette, fog trails, drifting smoke. The market never closes, so it is always dusk.</p>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="frame"><div class="art a-dune"><svg viewBox="0 0 640 360" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="0,360 120,220 260,300 400,200 520,280 640,180 640,360" fill="#3A2A17"/><polygon points="0,360 90,280 200,330 320,260 460,320 640,240 640,360" fill="#5A4322"/><polygon points="360,150 420,90 480,150" fill="#2A1F16"/><polygon points="470,170 520,120 570,170" fill="#2A1F16"/><g transform="translate(150,160) scale(.55)" fill="#E8B85A"><polygon points="118,86 150,52 196,44 226,60 236,96 226,128 200,144 176,146 152,160 128,150 112,120" opacity=".9"/><polygon points="112,120 84,150 92,190 128,178 128,150" opacity=".6"/><polygon points="176,146 200,144 232,168 238,300 62,300 60,224 92,190 128,178 152,160" opacity=".85"/><polygon points="232,168 300,158 400,150 470,160 500,190 500,300 238,300" opacity=".75"/><polygon points="20,300 20,250 62,224 60,300" opacity=".8"/></g></svg><span class="tc">WIDE</span><span class="lbl">Faceted dunes · sphinx · pyramids · golden horizon</span></div><div class="cap"><b>Terrain</b><p>Low-poly, flat-shaded, 200–800 tris per dune. Warm rim light. No textures except grain.</p><span class="mono">ref: public/experience/SC_01_* · SC_02_P*</span></div></div>
+    <div class="frame"><div class="art a-dune" style="background:radial-gradient(500px 200px at 50% 130%, rgba(232,184,90,.5), transparent 60%), linear-gradient(180deg,#0E0906,#1E1610 60%,#2A1F16)"><div class="stars" style="opacity:.6;mask-image:none;-webkit-mask-image:none"></div><svg viewBox="0 0 640 360" style="position:absolute;inset:0;width:100%;height:100%"><path d="M120 120 q10 -8 20 0 q-10 -2 -20 0" fill="#1E1610"/><path d="M160 90 l14 -6 l14 6 l-14 -2 z" fill="#0E0906"/><path d="M420 70 l12 -5 l12 5 l-12 -2 z" fill="#0E0906"/><path d="M470 110 l10 -4 l10 4 l-10 -1 z" fill="#0E0906"/></svg><span class="tc">SKY</span><span class="lbl">Night sky · sparse stars · bird silhouettes · fog</span></div><div class="cap"><b>Atmosphere</b><p>Stars at 35% opacity, fog trails drifting left, birds crossing once every 8–12 s.</p><span class="mono">ref: BIRD_ALPHA · fog_flow · TRAILS · SMOKE</span></div></div>
+    <div class="frame"><div class="art" style="background:linear-gradient(180deg,#1E1610 0%,#3A2A17 55%,#E8B85A 100%)"><div style="position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,rgba(232,184,90,.2),rgba(243,212,138,.6));transform:scaleY(-1);opacity:.6"></div><span class="tc">LAKE</span><span class="lbl">Gold reflection · mirror at the horizon line</span></div><div class="cap"><b>Reflection</b><p>The lake mirrors the sky in gold. Horizon sits at 58% of frame height in every wide shot.</p><span class="mono">ref: SC_03_LAKE_TEXTURE · FLOW</span></div></div>
+  </div>
+  <div class="card" style="margin-top:22px;padding:14px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center"><img src="ref-hero.png" alt="live hero" style="width:100%;border-radius:10px;border:1px solid var(--hair)"/><div><b class="eyebrow">LIVE HERO · sphynxagent.xyz</b><p style="font-size:14px;margin-top:10px">This is the mood target. Everything in the video should feel like a camera move inside this frame: the same dunes, the same gold band, the same sphinx, the same serif title. Use it as the first image reference in every Higgsfield clip.</p></div></div></div>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card"><h3>Camera</h3><p style="font-size:14px">Slow dolly-in or lateral drift, 2–4% over 6 s. Wide 24mm feel. Never handheld. One move per shot.</p></div>
+    <div class="card"><h3>Motion</h3><p style="font-size:14px">Everything eases: <span class="mono">cubic-bezier(.16,1,.3,1)</span>. Text reveals letter by letter (scramble → settle). Cards rise 10px and fade. Nothing bounces.</p></div>
+    <div class="card"><h3>Sound (for video)</h3><p style="font-size:14px">Low desert wind, distant reverb. A single soft click on each refusal. No music stings, no whoosh.</p></div>
+  </div>
+  <div class="num">05 / 08</div>
+  <div class="foot"><span>world</span><span>low-poly · golden hour · slow camera</span></div>
+</section>
+
+<!-- ═══════════════ 06 STORYBOARD ═══════════════ -->
+<section class="board" id="b06" style="min-height:1000px">
+  <span class="eyebrow dim">06 · Storyboard · 30 s hero video</span>
+  <h2>Six frames. One refusal.</h2>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="frame"><div class="art a-dune"><div class="stars"></div><svg viewBox="0 0 640 360" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="0,360 120,240 260,310 400,220 520,290 640,200 640,360" fill="#3A2A17"/><g transform="translate(200,140) scale(.5)" fill="#E8B85A" opacity=".6"><polygon points="118,86 150,52 196,44 226,60 236,96 226,128 200,144 176,146 152,160 128,150 112,120"/><polygon points="112,120 84,150 92,190 128,178 128,150" opacity=".7"/><polygon points="176,146 200,144 232,168 238,300 62,300 60,224 92,190 128,178 152,160"/><polygon points="232,168 300,158 400,150 470,160 500,190 500,300 238,300" opacity=".85"/><polygon points="20,300 20,250 62,224 60,300"/></g></svg><span class="tc">00:00 – 00:05</span><span class="lbl">F1 · Dusk over the dunes</span></div><div class="cap"><b>F1 · Establish</b><p>Wide. Night sky, golden horizon, sphinx silhouette. Slow dolly-in. Stars fade up.</p><span class="mono">VO: "Markets never close now."</span></div></div>
+    <div class="frame"><div class="art a-dune"><div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)" id="cat-f2"></div><span class="tc">00:05 – 00:09</span><span class="lbl">F2 · The gatekeeper boots</span></div><div class="cap"><b>F2 · Mascot</b><p>Cut to black. The cat lights up bottom-up, row by row, 1.2 s. Eyes last. Glow blooms.</p><span class="mono">VO: "Neither does the gatekeeper."</span></div></div>
+    <div class="frame"><div class="art a-ui"><div style="position:absolute;inset:22px;border:1px solid var(--hair);border-radius:10px;padding:14px"><div class="eyebrow" style="font-size:7px">ORDER TICKET · NVDA · $222.28</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px"><div style="background:var(--sand);color:#1E1610;font-family:var(--pixel);font-size:7px;padding:8px;text-align:center;border-radius:6px">BUY</div><div style="border:1px solid var(--hair);font-family:var(--pixel);font-size:7px;padding:8px;text-align:center;border-radius:6px;color:var(--ink-soft)">SELL</div></div><div style="margin-top:10px;font-family:var(--serif);font-size:26px;border:1px solid var(--sand);border-radius:8px;padding:6px 10px">1,500 <span style="font-family:var(--pixel);font-size:7px;color:var(--ink-2)">USDG</span></div></div><span class="tc">00:09 – 00:14</span><span class="lbl">F3 · An order is composed</span></div><div class="cap"><b>F3 · Ticket</b><p>The trade terminal. Amount types itself in. Stop slider moves. Quote appears.</p><span class="mono">VO: "Every order answers the riddle first."</span></div></div>
+    <div class="frame"><div class="art a-term"><div class="verdict fail"><i>✕</i><span>previewTrade → PerTradeCap</span></div><span class="tc">00:14 – 00:19</span><span class="lbl">F4 · The Sphinx says no</span></div><div class="cap"><b>F4 · Refusal</b><p>Verdict card flips terracotta. Cat flashes terracotta 600 ms. One soft click. Budget counter does not move.</p><span class="mono">VO: "A refused order spends nothing."</span></div></div>
+    <div class="frame"><div class="art a-term"><div class="verdict pass"><i>✓</i><span>previewTrade → None</span></div><span class="tc">00:19 – 00:24</span><span class="lbl">F5 · A smaller order passes</span></div><div class="cap"><b>F5 · Pass</b><p>Amount shrinks to 150. Verdict goes gold. Sign button lights. Tx hash scrolls. NAV ticks.</p><span class="mono">VO: "Rules carved on chain, before it trades."</span></div></div>
+    <div class="frame"><div class="art a-dune"><div class="stars"></div><div style="position:absolute;inset:0;display:grid;place-items:center"><div style="font-family:var(--serif);font-size:54px;letter-spacing:.08em;text-shadow:0 0 40px rgba(232,184,90,.4)">SPHYNX</div></div><span class="tc">00:24 – 00:30</span><span class="lbl">F6 · Title over the dunes</span></div><div class="cap"><b>F6 · Close</b><p>Back to the wide. Title rises from the horizon in serif. URL in pixel label. Hold.</p><span class="mono">VO: "We publish our no's." · sphynxagent.xyz</span></div></div>
+  </div>
+  <div class="tl" style="margin-top:26px">
+    <div><b>0–5 s</b>establish · wide · dolly-in</div><div><b>5–9 s</b>mascot boot · black bg</div><div><b>9–14 s</b>UI · ticket types itself</div><div><b>14–19 s</b>refusal · terracotta flash</div><div><b>19–24 s</b>pass · gold · hash</div><div><b>24–30 s</b>title · URL · hold</div>
+  </div>
+  <div class="bar"></div>
+  <div class="mono">Colour arc: night → gold → terracotta (one beat) → gold → night. The only red in the whole film is F4.</div>
+  <div class="num">06 / 08</div>
+  <div class="foot"><span>storyboard</span><span>30 s · 16:9 · one refusal, one pass</span></div>
+</section>
+
+<!-- ═══════════════ 07 HIGGSFIELD PROMPTS ═══════════════ -->
+<section class="board" id="b07" style="min-height:1000px">
+  <span class="eyebrow dim">07 · Higgsfield prompts</span>
+  <h2>Copy, paste, generate.</h2>
+  <p>Image-to-video: feed the frame from board 06 as the reference image and use the matching prompt. Text-to-video: use the prompt alone with the style block appended. Keep camera moves to one per clip.</p>
+  <div class="grid g2" style="margin-top:26px">
+    <div class="prompt"><span class="k">STYLE BLOCK (append to every prompt)</span>
+low-poly flat-shaded desert diorama, faceted dunes, golden hour rim light from below the horizon, dark night sky with sparse stars, warm brown-black shadows (#1E1610), sand gold accents (#E8B85A), cream highlights (#F3E9D2), film grain, slow cinematic camera, no people, no text, no logos, no neon, no chrome, no lens flare, no fast cuts, 16:9</div>
+    <div class="prompt"><span class="k">NEGATIVE</span>
+<span class="neg">photorealistic, real cat, fur, realistic sand texture, blue sky, daylight, neon, cyberpunk, glass morphism, chrome, rainbow, purple, green, lens flare, motion blur, shaky cam, handheld, fast cut, text, watermark, logo, people, faces, hands</span></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="prompt"><span class="k">F1 · ESTABLISH (5 s)</span>
+Wide shot of a low-poly desert at dusk. A faceted Great Sphinx silhouette sits in the middle distance with two low-poly pyramids behind it. The horizon glows sand gold; the sky above is deep brown-black with sparse stars fading in. Slow dolly-in, 3% over the clip. A thin trail of fog drifts left across the dunes. Two bird silhouettes cross the sky once. + STYLE BLOCK</div>
+    <div class="prompt"><span class="k">F2 · MASCOT BOOT (4 s)</span>
+On a pure #1E1610 background, a pixel-art hairless cat made of small rounded gold squares on a 22 by 24 dot grid lights up row by row from the paws to the ears over 1.2 seconds, unlit cells faintly visible at 14% opacity, the two eye cells turn deep sand last, then a soft gold glow blooms around the whole figure. Static camera. Nothing else in frame. + STYLE BLOCK</div>
+    <div class="prompt"><span class="k">F3 · TICKET (5 s)</span>
+Close-up of a dark trading interface card on a warm brown-black background: a gold BUY toggle, a large serif number field where the amount 1,500 types itself in, a thin gold slider labeled STOP that slides to 5%, and a dotted receipt box where a quote line fades in. Pixel-font labels in cream, serif numerals in cream, one gold accent. Slow push-in. + STYLE BLOCK</div>
+    <div class="prompt"><span class="k">F4 · REFUSAL (5 s)</span>
+The same dark interface. A verdict card in the center flips from neutral to terracotta (#E2664A): a small square icon with an X and the pixel text previewTrade → PerTradeCap. A tiny gold pixel cat in the corner flashes terracotta for half a second and returns to gold. A budget counter in the corner stays frozen. The rest of the frame stays dark and still. Single soft click. + STYLE BLOCK</div>
+    <div class="prompt"><span class="k">F5 · PASS (5 s)</span>
+The same dark interface. The amount shrinks from 1,500 to 150. The verdict card turns sand gold with a checkmark and the pixel text previewTrade → None. A wide gold button lights up. A transaction hash in monospace scrolls in from the bottom. A serif NAV number ticks upward once. Warm glow, no red anywhere. Slow push-in. + STYLE BLOCK</div>
+    <div class="prompt"><span class="k">F6 · TITLE (6 s)</span>
+Return to the wide low-poly desert at dusk. The serif word SPHYNX in cream rises slowly from behind the golden horizon line, letter-spaced, with a soft gold glow, and settles in the upper third of the frame. Below it a small pixel-font line reads sphynxagent.xyz. The camera drifts laterally 2%. Fog thins. Hold on the final frame. + STYLE BLOCK</div>
+  </div>
+  <div class="num">07 / 08</div>
+  <div class="foot"><span>prompts</span><span>image-to-video preferred · one camera move per clip</span></div>
+</section>
+
+<!-- ═══════════════ 08 SOCIAL / FORMATS ═══════════════ -->
+<section class="board" id="b08">
+  <span class="eyebrow dim">08 · Formats</span>
+  <h2>Same key, every frame.</h2>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="frame"><div class="art a-dune" style="aspect-ratio:16/9"><div class="stars"></div><div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div><div style="font-family:var(--serif);font-size:44px;letter-spacing:.06em">SPHYNX</div><div class="eyebrow" style="font-size:7px;margin-top:8px">EVERY SWAP ANSWERS THE RIDDLE</div></div></div><span class="tc">16:9 · 1920×1080</span></div><div class="cap"><b>Video · X · YouTube</b><p>Title centered, horizon at 58%. Mascot bottom-left at 44px.</p></div></div>
+    <div class="frame"><div class="art a-dune" style="aspect-ratio:1/1"><div class="stars"></div><div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div><div id="cat-sq" style="display:inline-block"></div><div style="font-family:var(--serif);font-size:36px;letter-spacing:.06em;margin-top:10px">SPHYNX</div></div></div><span class="tc">1:1 · 1080×1080</span></div><div class="cap"><b>Square · profile · post</b><p>Mascot large and centered, title under it, dunes as backdrop.</p></div></div>
+    <div class="frame"><div class="art a-dune" style="aspect-ratio:9/16;max-height:420px"><div class="stars"></div><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;text-align:left"><div class="eyebrow" style="font-size:7px">// THE SPHINX SAID NO</div><div style="font-family:var(--serif);font-size:40px;line-height:1;margin-top:8px">Refused.<br>PerTradeCap.</div><div class="mono" style="font-size:9px;margin-top:10px;color:var(--terra)">budget spent: 0</div></div><span class="tc">9:16 · 1080×1920</span></div><div class="cap"><b>Vertical · Reels · Shorts</b><p>Copy bottom-left, terracotta only on the refusal line.</p></div></div>
+  </div>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card"><h3>OG image</h3><p style="font-size:14px">1200×630. Mascot left at 300px, title right in serif 120px, tagline in pixel gold, caveat line in pixel dim. Already live: <span class="mono">public/brand/sphynx-og-riddle.png</span></p></div>
+    <div class="card"><h3>Lower thirds</h3><p style="font-size:14px">Pixel label in gold on a 1px cream hairline, left-aligned, 40px from the bottom. Text scrambles in over 400 ms.</p></div>
+    <div class="card"><h3>Files</h3><p style="font-size:14px">Fonts: Cormorant Garamond, Instrument Sans, Space Mono, Press Start 2P (Google Fonts). Textures: <span class="mono">public/experience/*.webp</span>. Mascot mask: <span class="mono">components/ui/pixel-sphynx.tsx</span></p></div>
+  </div>
+  <div class="num">08 / 08</div>
+  <div class="foot"><span>formats</span><span>sphynxagent.xyz · content/visual-key</span></div>
+</section>
+
+</div>
+<script>
+// render the pixel cat in its states (same mask as components/ui/pixel-sphynx.tsx)
+const MASK=["..##........##........","..###......###........","..####....####........","..#####..#####........","..############........","..############........","..############........","..##o######o##........","..############........","...##########.........","....########..........",".....######...........","....########..........","...##########.........","...###########........","...############.....##","...############....###","...############...###.","...############..###..","....###########..###..","....###############...","....##....##..........","....##....##..........","...###...###.........."];
+function cat(el, size, color, eye, progress, glow){
+  const cells=[],eyes=[];MASK.forEach((r,y)=>[...r].forEach((c,x)=>{if(c==='#')cells.push([x,y]);if(c==='o')eyes.push([x,y]);}));
+  const order=cells.map((_,i)=>i).sort((a,b)=>cells[b][1]-cells[a][1]||cells[a][0]-cells[b][0]);
+  const lit=progress===undefined?cells.length:Math.round(cells.length*progress);
+  const W=22,H=24,C=20,G=3;
+  let s=`<svg viewBox="0 0 ${W*C} ${H*C}" width="${size}" height="${size*H/W}" style="display:inline-block;filter:drop-shadow(0 0 ${glow}px ${color}88)">`;
+  order.forEach((ci,rank)=>{const [x,y]=cells[ci];s+=`<rect x="${x*C+G/2}" y="${y*C+G/2}" width="${C-G}" height="${C-G}" rx="3" fill="${color}" opacity="${rank<lit?1:.14}"/>`;});
+  eyes.forEach(([x,y])=>{s+=`<rect x="${x*C+G/2}" y="${y*C+G/2}" width="${C-G}" height="${C-G}" rx="3" fill="${eye}" opacity="${progress===undefined||progress>.95?1:.14}"/>`;});
+  s+='</svg>'; document.getElementById(el).innerHTML=s;
+}
+cat('cat-idle',150,'#E8B85A','#A67C33',undefined,14);
+cat('cat-boot',150,'#E8B85A','#A67C33',0.4,6);
+cat('cat-yes',150,'#F3D48A','#F3D48A',undefined,26);
+cat('cat-no',150,'#E2664A','#A67C33',undefined,16);
+cat('cat-f2',140,'#E8B85A','#A67C33',0.62,14);
+cat('cat-sq',110,'#E8B85A','#A67C33',undefined,16);
+</script>
+</body>
+</html>
