@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import "../vx.css";
 
-const ACCESS_EMAIL = process.env.NEXT_PUBLIC_ACCESS_EMAIL || "access@sphynxagent.xyz";
 const EVM_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
 const ACCESS_WAVE = "Wave 02 is open. Requests are reviewed weekly; earlier wallets first.";
 
@@ -87,12 +86,6 @@ export default function RequestAccessPage() {
       "acknowledged: gated access, unaudited on-chain module, no track record, not investment advice",
     ].join("\n");
   }, [emailClean, intent, lane, persona, requestId, telegram, walletClean]);
-
-  const mailto = useMemo(() => {
-    const subject = encodeURIComponent(`SPHYNX access request ${requestId || ""}`.trim());
-    const body = encodeURIComponent(payload);
-    return `mailto:${ACCESS_EMAIL}?subject=${subject}&body=${body}`;
-  }, [payload, requestId]);
 
   async function submitRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -304,12 +297,11 @@ export default function RequestAccessPage() {
           {submitted && (
             <div className="access-next">
               <p>
-                Request is saved in the SPHYNX access file. Send a copy from your
-                inbox too if you want a human-readable trail.
+                Request saved. Keep your request ID; approvals go to the contact you gave.
               </p>
               <div className="vx-cta-row">
-                <a className="vx-btn vx-btn-lime" href={mailto}>
-                  <span>Send request</span>
+                <a className="vx-btn vx-btn-lime" href="/trade">
+                  <span>Open the terminal</span>
                 </a>
                 <button className="vx-btn vx-btn-glass" type="button" onClick={copyPayload}>
                   <span>{copied ? "Copied" : "Copy payload"}</span>
