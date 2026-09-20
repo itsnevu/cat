@@ -24,6 +24,7 @@ export function TradeTerminal() {
   const [ticker, setTicker] = useState("NVDA");
   const [side, setSide] = useState<"buy" | "sell">("buy");
   const [amount, setAmount] = useState("");
+  const [units, setUnits] = useState<string | null>(null); // exact wei for sells chosen via held / %; null = parse `amount`
   const [stopPct, setStopPct] = useState(5);
   const [slipBps, setSlipBps] = useState(100);
   const [leftSide, setLeftSide] = useState(false);
@@ -51,13 +52,14 @@ export function TradeTerminal() {
     const t = setTimeout(async () => {
       try {
         const stop = side === "buy" ? (1 - stopPct / 100).toFixed(4) : "0";
-        const r = await fetch(`/api/chain?preview=1&token=${ticker}&side=${side}&amount=${amt}&stop=${stop}&slip=${slipBps}&left=${leftSide ? 1 : 0}`, { cache: "no-store" });
+        const u = side === "sell" && units ? `&units=${units}` : "";
+        const r = await fetch(`/api/chain?preview=1&token=${ticker}&side=${side}&amount=${amt}${u}&stop=${stop}&slip=${slipBps}&left=${leftSide ? 1 : 0}`, { cache: "no-store" });
         const j = await r.json();
         if (id === seq.current && j.ok) setPreview(j);
       } finally { if (id === seq.current) setPreviewing(false); }
     }, 350);
     return () => clearTimeout(t);
-  }, [amount, side, ticker, stopPct, slipBps, leftSide]);
+  }, [amount, units, side, ticker, stopPct, slipBps, leftSide]);
 
   const afterTx = async (label: string, hash: string) => {
     push({ kind: "info", title: `${label} sent`, body: "Waiting for confirmation…", href: txUrl(hash) });
@@ -79,7 +81,7 @@ export function TradeTerminal() {
     if (!w.onChain) { await w.switchChain(); return; }
     const hash = await w.send(w.executor, calldata.execute(preview.tuple));
     const ok = await afterTx(`${side.toUpperCase()} ${ticker}`, hash);
-    if (ok) { setAmount(""); setPreview(null); }
+    if (ok) { setAmount(""); setUnits(null); setPreview(null); }
   });
 
   const deposit = () => run("Deposit", async () => {
@@ -271,8 +273,8 @@ export function TradeTerminal() {
               <div className="tt-card-h">Order ticket<span className="grow">{ticker} · {market ? `$${twapNum.toFixed(2)}` : "—"}</span></div>
               <div className="tt-card-b">
                 <div className="tt-seg">
-                  <button className={`buy ${side === "buy" ? "on" : ""}`} onClick={() => { setSide("buy"); setAmount(""); }}>BUY</button>
-                  <button className={`sell ${side === "sell" ? "on" : ""}`} onClick={() => { setSide("sell"); setAmount(""); }}>SELL</button>
+                  <button className={`buy ${side === "buy" ? "on" : ""}`} onClick={() => { setSide("buy"); setAmount(""); setUnits(null); }}>BUY</button>
+                  <button className={`sell ${side === "sell" ? "on" : ""}`} onClick={() => { setSide("sell"); setAmount(""); setUnits(null); }}>SELL</button>
                 </div>
 
                 <div className="tt-field">
@@ -280,16 +282,16 @@ export function TradeTerminal() {
                     <span>{side === "buy" ? "Spend" : "Sell"}</span>
                     {side === "buy"
                       ? <b onClick={() => setAmount(maxBuy > 0 ? maxBuy.toFixed(2) : "")}>max {maxBuy.toLocaleString("en-US", { maximumFractionDigits: 0 })} USDG ({data ? bps(data.caps.perTradeBps) : "—"} of NAV)</b>
-                      : <b onClick={() => setAmount(position ? (Number(BigInt(position.units)) / 1e18).toString() : "")}>held {position ? fmtUnits(position.units) : "0"} {ticker}</b>}
+                      : <b onClick={() => { if (!position) return; setUnits(position.units); setAmount((Number(BigInt(position.units)) / 1e18).toFixed(8)); }}>held {position ? fmtUnits(position.units) : "0"} {ticker}</b>}
                   </label>
                   <div className="tt-input">
-                    <input inputMode="decimal" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ""))} />
+                    <input inputMode="decimal" placeholder="0.00" value={amount} onChange={(e) => { setUnits(null); setAmount(e.target.value.replace(/[^0-9.]/g, "")); }} />
                     <span className="unit">{side === "buy" ? "USDG" : ticker}</span>
                   </div>
                   <div className="tt-quick">
                     {side === "buy"
                       ? [25, 50, 75, 100].map((p) => <button key={p} onClick={() => setAmount(((maxBuy * p) / 100).toFixed(2))}>{p}%</button>)
-                      : [25, 50, 75, 100].map((p) => <button key={p} onClick={() => setAmount(position ? ((Number(BigInt(position.units)) / 1e18) * p / 100).toFixed(6) : "")}>{p}%</button>)}
+                      : [25, 50, 75, 100].map((p) => <button key={p} onClick={() => { if (!position) return; const u = (BigInt(position.units) * BigInt(p)) / 100n; setUnits(u.toString()); setAmount((Number(u) / 1e18).toFixed(8)); }}>{p}%</button>)}
                   </div>
                 </div>
 

@@ -56,7 +56,11 @@ export async function GET(req: NextRequest) {
           stopPriceE18 = frac > 0 ? (twap * BigInt(Math.round(frac * 1e6))) / 1_000_000n : 0n;
         }
       }
-      const amountIn = isBuy ? BigInt(Math.round(amount * 1e6)) : BigInt(Math.round(amount * 1e6)) * 10n ** 12n;
+      // sells: `units` (exact 18-dec wei string) wins over `amount`, so "sell everything" never rounds above the balance
+      const unitsParam = q.get("units");
+      const amountIn = isBuy
+        ? BigInt(Math.round(amount * 1e6))
+        : unitsParam && /^\d+$/.test(unitsParam) ? BigInt(unitsParam) : BigInt(Math.round(amount * 1e6)) * 10n ** 12n;
       let quote = 0n; let quoteError: string | undefined;
       try {
         quote = amountIn === 0n ? 0n : await quoteSwap(isBuy ? ADDR.usdg : tok.address, isBuy ? tok.address : ADDR.usdg, amountIn);
