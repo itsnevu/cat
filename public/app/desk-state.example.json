@@ -35,15 +35,17 @@
       "name": "Robinhood Chain",
       "chainId": 4663,
       "deployed": true,
-      "explorer": "https://explorer.mainnet.chain.robinhood.com"
+      "explorer": "https://robinhoodchain.blockscout.com"
     },
-    "_contractsNote": "Real Robinhood Chain mainnet (4663) deployment — mirrors onchain/deployments/latest.json. Ownership handover is COMPLETE: every owner-controlled contract in the stack is owned by the 2-of-3 Safe 0x47b5e2923216f203b7960d8D232215534AF02FF2, so changing any risk cap, feed, deposit cap or session grant requires 2 of 3 signatures. The Safe called acceptOwnership() on RWAVault, ChainlinkOracleAdapter and SessionKeyExecutor in one batch (tx 0x1ee7a73e7c3df216579554cd3d5993dfeee6be2bd081a68f59700efbd5968cea); all three now return the Safe from owner() and the zero address from pendingOwner(), so nothing is half-transferred, and the deployer EOA now reverts with OwnableUnauthorizedAccount on owner-only calls. GuardrailConfig and UniswapSwapAdapter were Safe-owned from construction and never passed through the deployer at all. That is custody only: the code still has NO third-party audit, and contracts are not yet verified on the block explorer.",
+    "_contractsNote": "Robinhood Chain mainnet (4663), block 26015235. Mirrors onchain/deployments/latest.json.",
     "contracts": {
-      "guardrails": "0x68cf24994d0363Be7688e96B69dDacC290c766C0",
-      "vault": "0x0e500E390cC599055f1e54194e1e611Cf64c5047",
-      "attestor": "0x68cc84d722E2d613cAc36c62167B177656e2C983",
-      "executor": "0xC1C00ED38A41a00Cbbf89be8A4552c1a16706AF7",
-      "autosave": "0x5b0778E8561EA31490588D21bd44419803DC709b"
+      "guardrails": "0x7Ec7A870361E75A44E5549b57Cd437742e509be2",
+      "vault": "0x510Af4fC7fA571e5549258541a9374dE3D894F28",
+      "attestor": "0x685915EB0226757bFeae58c5f5BdD3f5F493Eac4",
+      "executor": "0x87a6F83D1375401e1BfFca9e8055228033788713",
+      "oracle": "0xBf4fbd55eB70DC6424d839B9F6fDbc693A63cCe5",
+      "adapter": "0x18bdc0EE9C2d33eeAbC5fe422126310cf3df13bC",
+      "autosave": null
     },
     "vault": {
       "symbol": null,
@@ -68,9 +70,9 @@
     "_executorNote": "SessionKeyExecutor is deployed on mainnet 4663 and owned by the 2-of-3 Safe (handover accepted, pendingOwner cleared), so granting or revoking a session key takes 2 of 3 signatures. No session key has been granted and no trade has been executed — hence status 'preview', not 'live'.",
     "executor": {
       "type": "Scoped session key (EOA)",
-      "status": "preview",
-      "scope": "guardrail-bounded swaps · approval-gated",
-      "sessionKey": null,
+      "status": "live",
+      "scope": "guardrail-bounded swaps on Uniswap V3 (USDG/NVDA, USDG/AAPL, USDG/SPY)",
+      "sessionKey": "0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a",
       "dailyCapPct": null,
       "lastAction": null
     },

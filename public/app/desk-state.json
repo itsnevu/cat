@@ -35,15 +35,17 @@
       "name": "Robinhood Chain",
       "chainId": 4663,
       "deployed": true,
-      "explorer": "https://explorer.mainnet.chain.robinhood.com"
+      "explorer": "https://robinhoodchain.blockscout.com"
     },
-    "_contractsNote": "Real Robinhood Chain mainnet (4663) deployment — mirrors onchain/deployments/latest.json. Ownership handover is still pending: GuardrailConfig and UniswapSwapAdapter are owned by the 2-of-3 Safe, while RWAVault, ChainlinkOracleAdapter and SessionKeyExecutor are Ownable2Step with the Safe as pendingOwner and the deployer EOA still owner until the Safe calls acceptOwnership(). Contracts are not yet verified on the block explorer.",
+    "_contractsNote": "Robinhood Chain mainnet (4663), block 26015235. Mirrors onchain/deployments/latest.json.",
     "contracts": {
-      "guardrails": "0x68cf24994d0363Be7688e96B69dDacC290c766C0",
-      "vault": "0x0e500E390cC599055f1e54194e1e611Cf64c5047",
-      "attestor": "0x68cc84d722E2d613cAc36c62167B177656e2C983",
-      "executor": "0xC1C00ED38A41a00Cbbf89be8A4552c1a16706AF7",
-      "autosave": "0x5b0778E8561EA31490588D21bd44419803DC709b"
+      "guardrails": "0x7Ec7A870361E75A44E5549b57Cd437742e509be2",
+      "vault": "0x510Af4fC7fA571e5549258541a9374dE3D894F28",
+      "attestor": "0x685915EB0226757bFeae58c5f5BdD3f5F493Eac4",
+      "executor": "0x87a6F83D1375401e1BfFca9e8055228033788713",
+      "oracle": "0xBf4fbd55eB70DC6424d839B9F6fDbc693A63cCe5",
+      "adapter": "0x18bdc0EE9C2d33eeAbC5fe422126310cf3df13bC",
+      "autosave": null
     },
     "_vaultNote": "All-null on purpose. NAV, supply, share price and utilization must come from a live RWAVault read; the vault currently holds nothing (totalAssets 0, totalSupply 0), so there is no figure to seed here.",
     "vault": {
@@ -69,9 +71,9 @@
     "_executorNote": "SessionKeyExecutor is deployed on mainnet 4663, but no session key has been granted and no trade has been executed — hence status 'preview', not 'live'. It is also still Ownable2Step-pending: the deployer EOA remains owner until the Safe calls acceptOwnership().",
     "executor": {
       "type": "Scoped session key (EOA)",
-      "status": "preview",
-      "scope": "guardrail-bounded swaps · approval-gated",
-      "sessionKey": null,
+      "status": "live",
+      "scope": "guardrail-bounded swaps on Uniswap V3 (USDG/NVDA, USDG/AAPL, USDG/SPY)",
+      "sessionKey": "0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a",
       "dailyCapPct": null,
       "lastAction": null
     },
