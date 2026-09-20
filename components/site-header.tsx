@@ -4,12 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { SphynxLogo } from "@/components/ui/sphynx-logo";
 import { ScrambleHover } from "@/components/ui/scramble-hover";
 import { NAV } from "@/lib/data";
+import { usePathname } from "next/navigation";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { cn } from "@/lib/cn";
 
 
 export function SiteHeader() {
-  const [active, setActive] = useState<string>(NAV[0].href.slice(1));
+  const pathname = usePathname();
+  const home = pathname === "/";
+  const [active, setActive] = useState<string>(home ? NAV[0].href.slice(1) : "");
   const [drawer, setDrawer] = useState(false);
   const [showTop, setShowTop] = useState(false);
   const progRef = useRef<HTMLDivElement>(null);
@@ -67,7 +70,7 @@ export function SiteHeader() {
       <div className="scroll-prog" ref={progRef} />
       <header className="hdr">
         <div className="nav">
-          <a href="#top" className="brand">
+          <a href="/" className="brand">
             <SphynxLogo />
             SPHYNX
           </a>
@@ -75,14 +78,17 @@ export function SiteHeader() {
             {NAV.map((item, i) => (
               <a
                 key={item.href}
-                href={item.href}
-                className={cn(item.href.slice(1) === active && "active", i === NAV.length - 1 && "cta")}
+                href={home ? item.href : `/${item.href}`}
+                className={cn(home && item.href.slice(1) === active && "active", i === NAV.length - 1 && "cta")}
               >
                 <span className="n">{item.n}</span> <ScrambleHover text={item.label} />
               </a>
             ))}
-            <a href="/docs">
-              <span className="n">05</span> <ScrambleHover text="Docs" />
+            <a href="/trade" className={cn(pathname?.startsWith("/trade") && "active")}>
+              <span className="n">05</span> <ScrambleHover text="Trade" />
+            </a>
+            <a href="/docs" className={cn(pathname?.startsWith("/docs") && "active")}>
+              <span className="n">06</span> <ScrambleHover text="Docs" />
             </a>
             <a href={REQUEST_ACCESS_URL} className="active" aria-label="Request access">
               <span className="n">↗</span> <ScrambleHover text="Request Access" />
@@ -101,12 +107,15 @@ export function SiteHeader() {
           ✕
         </button>
         {NAV.map((item) => (
-          <a key={item.href} href={item.href} onClick={() => setDrawer(false)}>
+          <a key={item.href} href={home ? item.href : `/${item.href}`} onClick={() => setDrawer(false)}>
             <span className="n">{item.n}</span> <ScrambleHover text={item.label} />
           </a>
         ))}
+        <a href="/trade" onClick={() => setDrawer(false)}>
+          <span className="n">05</span> <ScrambleHover text="Trade" />
+        </a>
         <a href="/docs" onClick={() => setDrawer(false)}>
-          <span className="n">05</span> <ScrambleHover text="Docs" />
+          <span className="n">06</span> <ScrambleHover text="Docs" />
         </a>
         <a href={REQUEST_ACCESS_URL} onClick={() => setDrawer(false)}>
           <span className="n">↗</span> <ScrambleHover text="Request Access" />
