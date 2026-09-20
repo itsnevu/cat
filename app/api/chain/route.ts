@@ -88,13 +88,15 @@ export async function GET(req: NextRequest) {
       const holder = await readHolder(addr);
       return NextResponse.json({ ok: true, at: Date.now(), holder }, { headers: { "cache-control": "no-store" } });
     }
-    // sequential: the public RPC rate-limits parallel bursts
+    // three lanes in parallel; each lane is sequential so we stay under the public node's burst limit
     try {
-      const caps = await readCaps();
-      const session = await readSession(ADDR.agent);
-      const registry = await readRegistry();
-      const vault = await readVault();
-      const markets = await readMarkets();
+      const [caps, session, registry, vault, markets] = await Promise.all([
+        readCaps(),
+        readSession(ADDR.agent),
+        readRegistry(),
+        readVault(),
+        readMarkets(),
+      ]);
       const positions = await readPositions(BigInt(vault.totalAssets));
       const body = { ok: true, at: Date.now(), caps, session, registry, vault, markets, positions, addr: ADDR, block: DEPLOYMENT.block };
       last.summary = { at: Date.now(), body };
