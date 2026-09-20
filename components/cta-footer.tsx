@@ -5,8 +5,8 @@ import { ScrambleHover } from "@/components/ui/scramble-hover";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 const FOOT_LINKS: { label: string; href: string; external?: boolean }[] = [
-  { label: "REQUEST ACCESS", href: REQUEST_ACCESS_URL },
-  { label: "THE DESK", href: REQUEST_ACCESS_URL },
+  { label: "TRADE", href: REQUEST_ACCESS_URL },
+  { label: "REFUSALS", href: "/refusals" },
   { label: "HOW IT WORKS", href: "#flow" },
   { label: "THE TEAM", href: "#team" },
   { label: "GUARDRAILS", href: "#safety" },
@@ -27,7 +27,7 @@ export function CtaFooter() {
           </p>
           <Magnetic>
             <a href={REQUEST_ACCESS_URL} className="btn btn-lime">
-              <ScrambleHover text="Enter Access Wave" /> ▸
+              <ScrambleHover text="Connect Wallet" /> ▸
             </a>
           </Magnetic>
         </div>

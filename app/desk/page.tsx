@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 export const metadata: Metadata = {
-  title: "Request Access",
+  title: "Trade",
   description: "Request gated access to the SPHYNX desk and wallet pre-order list.",
 };
 

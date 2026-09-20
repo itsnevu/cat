@@ -41,12 +41,12 @@ export function Hero() {
         <div className="hero-cta">
           <Magnetic>
             <a href="#access" className="btn btn-primary">
-              Request Access ▸
+              Connect Wallet ▸
             </a>
           </Magnetic>
           <Magnetic>
-            <a href="/request-access" className="btn btn-ghost">
-              See The Desk
+            <a href="/docs/risks" className="btn btn-ghost">
+              Read The Risks
             </a>
           </Magnetic>
         </div>

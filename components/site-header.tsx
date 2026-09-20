@@ -91,7 +91,7 @@ export function SiteHeader() {
               <span className="n">06</span> <ScrambleHover text="Docs" />
             </a>
             <a href="/trade" className="active" aria-label="Trade">
-              <span className="n">↗</span> <ScrambleHover text="Access Open · Trade" />
+              <span className="n">↗</span> <ScrambleHover text="Connect Wallet" />
             </a>
           </nav>
           <button className="burger" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
@@ -118,10 +118,7 @@ export function SiteHeader() {
           <span className="n">06</span> <ScrambleHover text="Docs" />
         </a>
         <a href="/trade" onClick={() => setDrawer(false)}>
-          <span className="n">↗</span> <ScrambleHover text="Access Open · Trade" />
-        </a>
-        <a href={REQUEST_ACCESS_URL} onClick={() => setDrawer(false)}>
-          <span className="n">07</span> <ScrambleHover text="Request Access" />
+          <span className="n">↗</span> <ScrambleHover text="Connect Wallet" />
         </a>
       </div>
 

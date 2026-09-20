@@ -9,4 +9,4 @@ export const DOCS_PATH = "/docs";
  */
 export const VAULT_URL = "/trade"; // connect wallet · deposit · withdraw · trade (the /vault URL redirects here)
 export const DESK_APP_URL = "/app/index.html"; // raw desk mirror; public desk entry is gated by request access
-export const REQUEST_ACCESS_URL = "/request-access"; // wallet pre-order + gated desk access
+export const REQUEST_ACCESS_URL = "/trade"; // access is open: every CTA lands on the terminal (the form still lives at /request-access, unlinked)

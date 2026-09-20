@@ -259,10 +259,10 @@ export default function HomePage() {
           <span>SPHYNX</span>
         </a>
         <nav className="vx-nav">
-          <a className="vx-nav-link vx-nav-hide" href={REQUEST_ACCESS_URL}><span>Desk access</span></a>
+          <a className="vx-nav-link vx-nav-hide" href="/refusals"><span>Refusals</span></a>
           <a className="vx-nav-link vx-nav-hide" href="/docs"><span>Docs</span></a>
           <a className="vx-nav-cta" href={REQUEST_ACCESS_URL}>
-            <span>Request access</span>
+            <span>Connect wallet</span>
             <ArrowUpRight />
           </a>
         </nav>
@@ -323,7 +323,7 @@ export default function HomePage() {
           </Reveal>
           <Reveal className="vx-cta-row" i={8}>
             <a className="vx-btn vx-btn-lime" href={REQUEST_ACCESS_URL}>
-              <span>Request access</span>
+              <span>Connect wallet</span>
               <ArrowUpRight />
             </a>
             <a className="vx-btn vx-btn-glass" href="/refusals">
@@ -476,24 +476,24 @@ export default function HomePage() {
       <section className="vx-sec vx-h-last" id="vx-run">
         <div className="vx-sec__inner">
           <IndexLabel n="07">Access</IndexLabel>
-          <RevealChars text="Request Access" as="h2" className="vx-title" step={26} />
+          <RevealChars text="Access Is Open" as="h2" className="vx-title" step={26} />
           <RevealLines
             className="vx-desc"
             step={70}
             lines={[
-              "Two doors, one Sphinx. Access opens in waves — Wave 02 is open and",
-              "reviewed weekly. Tell us the door you want: the human-approved",
-              "desk (US equities) or the on-chain vault (stock tokens, non-US), and",
-              "attach an EVM wallet. Mainnet · unaudited · no track record · not advice.",
+              "Two doors, one Sphinx. The on-chain door is open: connect a wallet,",
+              "deposit USDG, and every order answers the vault before it fills.",
+              "Withdraw or redeem in kind at any time. The brokerage desk still",
+              "stops at a preview. Mainnet · unaudited · no track record · not advice.",
             ]}
           />
           <Reveal className="vx-cta-row" i={2}>
             <a className="vx-btn vx-btn-lime" href={REQUEST_ACCESS_URL}>
-              <span>Enter access wave</span>
+              <span>Connect wallet</span>
               <ArrowUpRight />
             </a>
-            <a className="vx-btn vx-btn-glass" href={REQUEST_ACCESS_URL}>
-              <span>See the desk</span>
+            <a className="vx-btn vx-btn-glass" href="/docs/risks">
+              <span>Read the risks</span>
             </a>
           </Reveal>
         </div>
@@ -503,13 +503,13 @@ export default function HomePage() {
         <Reveal className="vx-kicker" i={0}>Every swap answers the riddle.</Reveal>
         <RevealChars text="Pass the Sphinx" as="h2" className="vx-title" step={22} />
         <Reveal className="vx-cta-row" i={2}>
-          <a className="vx-btn vx-btn-lime" href={REQUEST_ACCESS_URL}><span>Request access</span><ArrowUpRight /></a>
+          <a className="vx-btn vx-btn-lime" href={REQUEST_ACCESS_URL}><span>Connect wallet</span><ArrowUpRight /></a>
           <a className="vx-btn vx-btn-glass" href="/refusals"><span>Our no&rsquo;s</span></a>
           <a className="vx-btn vx-btn-glass" href="/docs"><span>Docs</span></a>
           <a className="vx-btn vx-btn-glass" href={VAULT_URL}><span>Vault</span></a>
         </Reveal>
         <p className="vx-foot__legal">
-          <b>Not investment advice.</b> SPHYNX access is gated. The Robinhood Chain vault
+          <b>Not investment advice.</b> The Robinhood Chain vault
           is mainnet, unaudited, deposit-capped, has no timelock, no depositors, no trades
           and no track record. Sphynx is an independent project: it builds on Robinhood&rsquo;s
           Agentic API and on Robinhood Chain, and on Anthropic&rsquo;s Claude, but it is not
