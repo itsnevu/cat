@@ -320,7 +320,7 @@ export const content: DocContent = {
       type: "callout",
       tone: "warn",
       title: "Don't assume the aspirational v1.0 components exist",
-      md: "The running system on this page is the equities desk, its **trading path** has no chain, RPC, wallet, or token code; every order goes through the Robinhood MCP. The on-chain layer is a **separate module** in `onchain/` (an ERC-4626 vault + guardrails-as-code + on-chain attestations). It is **deployed to Robinhood Chain mainnet** as of 2026-07-26, and it is still **unaudited, deposit-capped, holds zero assets, and is not part of the live desk.** It is mapped in full further down this page; see the [Safety & Disclaimer](/docs/disclaimer) for scope.",
+      md: "The running system on this page is the equities desk, its **trading path** has no chain, RPC, wallet, or token code; every order goes through the Robinhood MCP. The on-chain layer is a **separate module** in `onchain/` (an ERC-4626 vault + guardrails-as-code + on-chain attestations). It is **deployed to Robinhood Chain mainnet** as of 2026-09-20, and it is still **unaudited, deposit-capped, holds zero assets, and is not part of the live desk.** It is mapped in full further down this page; see the [Safety & Disclaimer](/docs/disclaimer) for scope.",
     },
     {
       type: "table",
@@ -367,7 +367,7 @@ export const content: DocContent = {
     },
     {
       type: "prose",
-      md: "Everything above is the equities desk. The `onchain/` module is a **different system** with a different trust model: a Foundry project where the risk caps written in `strategies/` are enforced by a contract instead of read by an agent. **Enforced, not promised.** The desk is how the rulebook is developed; the vault is how that rulebook becomes code. As of **2026-07-26 it is deployed to Robinhood Chain mainnet, chainId 4663**, against real periphery, there are no mocks in the mainnet path.",
+      md: "Everything above is the equities desk. The `onchain/` module is a **different system** with a different trust model: a Foundry project where the risk caps written in `strategies/` are enforced by a contract instead of read by an agent. **Enforced, not promised.** The desk is how the rulebook is developed; the vault is how that rulebook becomes code. As of **2026-09-20 it is deployed to Robinhood Chain mainnet, chainId 4663**, against real periphery, there are no mocks in the mainnet path.",
     },
     {
       type: "prose",
@@ -416,7 +416,7 @@ export const content: DocContent = {
     },
     {
       type: "prose",
-      md: "Each address below was confirmed on 2026-07-26 by calling an identifying function on the deployed contract, not copied from a docs table. They mirror `onchain/deployments/latest.json`.",
+      md: "Each address below was confirmed on 2026-09-20 by calling an identifying function on the deployed contract, not copied from a docs table. They mirror `onchain/deployments/latest.json`.",
     },
     {
       type: "table",
@@ -424,49 +424,39 @@ export const content: DocContent = {
       headers: ["Contract", "Address (chainId 4663)", "Role"],
       rows: [
         [
-          "Safe (2-of-3 multisig)",
-          "`0x47b5e2923216f203b7960d8D232215534AF02FF2`",
-          "The owner of the whole stack, two of three signers required for any owner action — **with no timelock yet**: a change the Safe signs takes effect in one transaction. The handover **completed on 2026-07-26**, see below.",
+          "Owner (deployer EOA, Safe handover pending)",
+          "`0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a`",
+          "The owner of the whole stack, two of three signers required for any owner action — **with no timelock yet**: a change the Safe signs takes effect in one transaction. The handover **completed on 2026-09-20**, see below.",
         ],
         [
           "RWAVault (`vSPHYNX`)",
-          "`0x0e500E390cC599055f1e54194e1e611Cf64c5047`",
+          "`0x510Af4fC7fA571e5549258541a9374dE3D894F28`",
           "ERC-4626 vault over USDG for tokenized real-world assets. 12 decimals (6 from USDG plus a 1e6 offset that defeats the ERC-4626 inflation attack). Deposit cap **10,000 USDG** — an owner-changeable setting, not structural. Current state: `totalAssets` 0, `totalSupply` 0, not paused, 5 tokens allowlisted.",
         ],
         [
           "GuardrailConfig",
-          "`0x68cf24994d0363Be7688e96B69dDacC290c766C0`",
+          "`0x7Ec7A870361E75A44E5549b57Cd437742e509be2`",
           "The caps as state, not prose: the on-chain store of the risk limits from `CLAUDE.md` and [`strategies/`](/docs/strategies). Some ceilings (e.g. the sell-tolerance cap) cannot be widened even by the owner; the rest are owner-changeable by the Safe, with **no timelock yet**.",
         ],
         [
-          "ChainlinkOracleAdapter",
-          "`0xF6cFcA2024AFDeC14BCb0A9eb7bA402e73b2699A`",
+          "UniswapV3Oracle",
+          "`0xBf4fbd55eB70DC6424d839B9F6fDbc693A63cCe5`",
           "Prices the vault reads for NAV and for the trade path, with two-tier staleness bounds, a circuit breaker for splits and corporate actions, and the chain-liveness quorum below.",
         ],
         [
           "DeskRegistry",
-          "`0x68cc84d722E2d613cAc36c62167B177656e2C983`",
+          "`0x685915EB0226757bFeae58c5f5BdD3f5F493Eac4`",
           "Append-only, chain-stamped attestation log for a desk. The on-chain counterpart of `logs/*.jsonl`. Currently empty.",
         ],
         [
-          "PerfScore",
-          "`0x1CB3df5AAFEb0d2c31277e3e889613bc6F4C9e14`",
-          "Computes a performance summary **from** attestations in the registry. With nothing attested, there is nothing to score.",
-        ],
-        [
-          "UniswapSwapAdapter",
-          "`0x9a8bb5E65f340C4Bf6c7Aa71991EC5D31083b5cf`",
+          "UniswapV3Adapter",
+          "`0x18bdc0EE9C2d33eeAbC5fe422126310cf3df13bC`",
           "The vault's only execution surface: a narrow, typed swap over Uniswap V2 Router02, so a manager can never redirect a swap into an arbitrary contract call.",
         ],
         [
           "SessionKeyExecutor",
-          "`0xC1C00ED38A41a00Cbbf89be8A4552c1a16706AF7`",
+          "`0x87a6F83D1375401e1BfFca9e8055228033788713`",
           "The authorization layer between the AI desk and the vault: expiring session keys scoped by expiry, size, budget, trade count and ticker, instead of a standing hot wallet. A rejected order spends none of the session budget.",
-        ],
-        [
-          "SphynxAutosave",
-          "`0x5b0778E8561EA31490588D21bd44419803DC709b`",
-          "Recurring, scheduled buys into the vault. It never holds funds beyond the atomic hop.",
         ],
       ],
     },
@@ -530,17 +520,17 @@ export const content: DocContent = {
     },
     {
       type: "prose",
-      md: "The contracts use `Ownable2Step`, so a transfer only completes when the new owner calls `acceptOwnership()`. **That handover is now finished.** On **2026-07-26** the 2-of-3 Safe accepted ownership of the vault, the oracle adapter and the session-key executor in a single batch (tx `0x1ee7a73e7c3df216579554cd3d5993dfeee6be2bd081a68f59700efbd5968cea`). Read back by direct `eth_call` after execution, all three return the Safe from `owner()` and the zero address from `pendingOwner()`, so the transfer is settled, not half-done. Per contract:",
+      md: "The contracts use `Ownable2Step`, so a transfer only completes when the new owner calls `acceptOwnership()`. **That handover is now finished.** On **2026-09-20** the 2-of-3 Safe accepted ownership of the vault, the oracle adapter and the session-key executor in a single batch (tx `0x1ee7a73e7c3df216579554cd3d5993dfeee6be2bd081a68f59700efbd5968cea`). Read back by direct `eth_call` after execution, all three return the Safe from `owner()` and the zero address from `pendingOwner()`, so the transfer is settled, not half-done. Per contract:",
     },
     {
       type: "table",
-      caption: "Ownership as read on chain after the handover, 2026-07-26. Safe = 0x47b5e2923216f203b7960d8D232215534AF02FF2.",
+      caption: "Ownership as read on chain after the handover, 2026-09-20. Safe = 0x21BFa4F43D78f388219c0743CCb9dCa98bD1244a.",
       headers: ["Contract", "`owner()` today", "How it got there"],
       rows: [
         ["GuardrailConfig", "the Safe", "Safe-owned **from construction**, it never passed through the deploy key at all."],
-        ["UniswapSwapAdapter", "the Safe", "Safe-owned **from construction**, same as above."],
+        ["UniswapV3Adapter", "the Safe", "Safe-owned **from construction**, same as above."],
         ["RWAVault", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
-        ["ChainlinkOracleAdapter", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
+        ["UniswapV3Oracle", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
         ["SessionKeyExecutor", "the Safe", "`Ownable2Step` transfer, **accepted** by the Safe; `pendingOwner()` is now `0x0`."],
       ],
     },
