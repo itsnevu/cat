@@ -214,7 +214,7 @@ export function RefusalsBoard() {
                 </div>
               </div>
               <div className="ctrl">
-                <label htmlFor="rf-amt">{side === "buy" ? "USDG to spend" : "Tokens to sell"} · {amount.toLocaleString()}</label>
+                <label htmlFor="rf-amt">{side === "buy" ? "USDG to spend" : "Tokens to sell"} · {amount.toLocaleString("en-US")}</label>
                 <input id="rf-amt" type="range" min={0} max={20000} step={50} value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
               </div>
               <div className="ctrl">
