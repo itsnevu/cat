@@ -3,12 +3,12 @@
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-import { VAULT_URL } from "@/lib/links";
+
 import "../vx.css";
 
 const ACCESS_EMAIL = process.env.NEXT_PUBLIC_ACCESS_EMAIL || "access@sphynxagent.xyz";
 const EVM_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
-const ACCESS_WAVE = "Wave 01 review closes Friday, August 7, 2026";
+const ACCESS_WAVE = "Wave 02 is open. Requests are reviewed weekly; earlier wallets first.";
 
 type AccessLane = "wallet-preorder" | "desk-access" | "vault-access";
 type Persona = "trader" | "builder" | "fund" | "researcher";
@@ -154,7 +154,8 @@ export default function RequestAccessPage() {
         </Link>
         <nav className="access-nav" aria-label="Access navigation">
           <Link className="vx-nav-link" href="/docs">Docs</Link>
-          <Link className="vx-nav-link" href={VAULT_URL}>Vault</Link>
+          <Link className="vx-nav-link" href="/trade">Trade</Link>
+          <Link className="vx-nav-link" href="/refusals">Refusals</Link>
         </nav>
       </header>
 
@@ -166,15 +167,15 @@ export default function RequestAccessPage() {
           </p>
           <h1 className="access-title">Pass the Sphinx.</h1>
           <p className="access-lede">
-            Two doors, one Sphinx. Access opens in waves: drop an EVM wallet to enter Wave 01 for
+            Two doors, one Sphinx. Access opens in waves: drop an EVM wallet to enter Wave 02 for
             the human-approved desk (US equities), the wallet pre-order list, or the on-chain
             stock-token vault (not for US persons).
           </p>
           <div className="access-rail" aria-label="Request rules">
             <div>
               <span>01</span>
-              <strong>Wave 01</strong>
-              <p>Review closes Friday, August 7, 2026. Earlier wallets get reviewed first.</p>
+              <strong>Wave 02</strong>
+              <p>Wave 01 closed in August. Wave 02 is open now: requests are reviewed weekly, earlier wallets first.</p>
             </div>
             <div>
               <span>02</span>

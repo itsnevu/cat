@@ -481,8 +481,8 @@ export default function HomePage() {
             className="vx-desc"
             step={70}
             lines={[
-              "Two doors, one Sphinx. Access opens in waves — Wave 01 review closes",
-              "Friday, August 7, 2026. Tell us the door you want: the human-approved",
+              "Two doors, one Sphinx. Access opens in waves — Wave 02 is open and",
+              "reviewed weekly. Tell us the door you want: the human-approved",
               "desk (US equities) or the on-chain vault (stock tokens, non-US), and",
               "attach an EVM wallet. Mainnet · unaudited · no track record · not advice.",
             ]}

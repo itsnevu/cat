@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     persona,
     telegram: telegram || null,
     intent: intent || null,
-    accessWave: "Wave 01 review closes Friday, August 7, 2026",
+    accessWave: "Wave 02 is open. Requests are reviewed weekly; earlier wallets first.",
     acknowledged: "gated access, unaudited on-chain module, no track record, not investment advice",
     createdAt: new Date().toISOString(),
   };

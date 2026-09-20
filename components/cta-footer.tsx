@@ -22,7 +22,7 @@ export function CtaFooter() {
           <span className="eyebrow">// 04, ACCESS</span>
           <h2>Pass the Sphinx.</h2>
           <p>
-            Two doors, one Sphinx. Wave 01 review closes Friday, August 7, 2026. Drop an EVM
+            Two doors, one Sphinx. Wave 02 is open, reviewed weekly. Drop an EVM
             wallet for the human-approved desk, the wallet pre-order list, or the on-chain vault.
           </p>
           <Magnetic>

@@ -160,6 +160,15 @@ export const content: DocContent = {
       ],
     },
     {
+      type: "cards",
+      columns: 3,
+      cards: [
+        { title: "Trade on chain", badge: "LIVE", md: "The vault, the caps and the session key are live on Robinhood Chain. Compose an order, read the verdict, sign. [Open the terminal](/trade) · [Trading Guide](/docs/trading)" },
+        { title: "Read the whitepaper", badge: "WHY", md: "The problem with autonomous agents, the two doors, the trust model, what is proven and what is not. [Whitepaper](/docs/whitepaper)" },
+        { title: "Read the risks", badge: "FIRST", md: "No audit, no timelock, one key, a pool TWAP. Ranked, with what limits each one today. [Risks](/docs/risks)" },
+      ],
+    },
+    {
       type: "callout",
       tone: "info",
       title: "New here?",

@@ -112,12 +112,18 @@ async function rpc(method: string, params: unknown[], fetchImpl: typeof fetch = 
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
     cache: "no-store",
   } as RequestInit);
-  if (res.status === 429 && attempt < 3) {
-    await new Promise((r) => setTimeout(r, 350 * (attempt + 1)));
+  if (res.status === 429 && attempt < 4) {
+    await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
     return rpc(method, params, fetchImpl, attempt + 1);
   }
   const json = (await res.json()) as { result?: unknown; error?: { message: string } };
-  if (json.error) throw new Error(json.error.message);
+  if (json.error) {
+    if (/too many|rate/i.test(json.error.message) && attempt < 4) {
+      await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+      return rpc(method, params, fetchImpl, attempt + 1);
+    }
+    throw new Error(json.error.message);
+  }
   return json.result;
 }
 

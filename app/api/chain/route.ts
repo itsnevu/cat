@@ -20,6 +20,22 @@ export const dynamic = "force-dynamic";
 const ok = (body: unknown, maxAge = 20) =>
   NextResponse.json(body, { headers: { "cache-control": `public, s-maxage=${maxAge}, stale-while-revalidate=120` } });
 
+/**
+ * Last-good snapshots. The public RPC rate-limits bursts; when a read fails we serve the previous
+ * answer with `stale: true` and its age instead of a 502, so the pages never go blank.
+ */
+type Snap = { at: number; body: Record<string, unknown> };
+const last: { summary?: Snap; trades?: Snap } = {};
+const STALE_OK_MS = 30 * 60_000;
+const withStale = (key: keyof typeof last, e: unknown) => {
+  const s = last[key];
+  const msg = e instanceof Error ? e.message : "chain unreachable";
+  if (s && Date.now() - s.at < STALE_OK_MS) {
+    return NextResponse.json({ ...s.body, stale: true, staleFor: Date.now() - s.at, error: msg }, { headers: { "cache-control": "no-store" } });
+  }
+  return NextResponse.json({ ok: false, error: msg }, { status: 502 });
+};
+
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams;
   try {
@@ -58,9 +74,13 @@ export async function GET(req: NextRequest) {
       }, { headers: { "cache-control": "no-store" } });
     }
     if (q.get("trades")) {
-      const trades = await readTrades();
-      const flows = await readFlows();
-      return ok({ ok: true, at: Date.now(), trades, flows }, 30);
+      try {
+        const trades = await readTrades();
+        const flows = await readFlows();
+        const body = { ok: true, at: Date.now(), trades, flows };
+        last.trades = { at: Date.now(), body };
+        return ok(body, 30);
+      } catch (e) { return withStale("trades", e); }
     }
     if (q.get("holder")) {
       const addr = q.get("holder")!;
@@ -69,13 +89,17 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ ok: true, at: Date.now(), holder }, { headers: { "cache-control": "no-store" } });
     }
     // sequential: the public RPC rate-limits parallel bursts
-    const caps = await readCaps();
-    const session = await readSession(ADDR.agent);
-    const registry = await readRegistry();
-    const vault = await readVault();
-    const markets = await readMarkets();
-    const positions = await readPositions(BigInt(vault.totalAssets));
-    return ok({ ok: true, at: Date.now(), caps, session, registry, vault, markets, positions, addr: ADDR, block: DEPLOYMENT.block });
+    try {
+      const caps = await readCaps();
+      const session = await readSession(ADDR.agent);
+      const registry = await readRegistry();
+      const vault = await readVault();
+      const markets = await readMarkets();
+      const positions = await readPositions(BigInt(vault.totalAssets));
+      const body = { ok: true, at: Date.now(), caps, session, registry, vault, markets, positions, addr: ADDR, block: DEPLOYMENT.block };
+      last.summary = { at: Date.now(), body };
+      return ok(body);
+    } catch (e) { return withStale("summary", e); }
   } catch (e) {
     return NextResponse.json({ ok: false, error: e instanceof Error ? e.message : "chain unreachable" }, { status: 502 });
   }

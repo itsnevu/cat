@@ -15,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/request-access`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/trade`, lastModified, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE_URL}/refusals`, lastModified, changeFrequency: "daily", priority: 0.8 },
-    { url: `${SITE_URL}/vault`, lastModified, changeFrequency: "weekly", priority: 0.6 },
   ];
 
   const docsRoutes: MetadataRoute.Sitemap = DOCS_ORDER.map(({ slug }) => ({

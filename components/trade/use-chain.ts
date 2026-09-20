@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Attestation, Caps, Market, Position, Session, VaultState, Trade, Flow } from "@/lib/chain";
 
 export type ChainData = {
-  ok: true; at: number; caps: Caps; session: Session; vault: VaultState; markets: Market[]; positions: Position[];
+  ok: true; at: number; stale?: boolean; staleFor?: number; caps: Caps; session: Session; vault: VaultState; markets: Market[]; positions: Position[];
   registry: { count: number; latest: Attestation[] }; addr: Record<string, string>; block: number;
 };
 export type HistoryData = { ok: true; at: number; trades: Trade[]; flows: Flow[] };
@@ -17,7 +17,8 @@ export function useChain(intervalMs = 30_000) {
     try {
       const r = await fetch("/api/chain", { cache: "no-store" });
       const j = await r.json();
-      if (j.ok) { setData(j); setErr(null); } else setErr(j.error ?? "chain unreachable");
+      if (j.ok) { setData(j); setErr(j.stale ? `stale · ${Math.round((j.staleFor ?? 0) / 1000)}s` : null); }
+      else setErr(j.error ?? "chain unreachable"); // keep the last data on screen
     } catch (e) { setErr(String(e)); } finally { setLoading(false); }
   }, []);
   useEffect(() => { load(); const id = setInterval(load, intervalMs); return () => clearInterval(id); }, [load, intervalMs]);

@@ -128,8 +128,8 @@ export function TradeTerminal() {
             </p>
           </div>
           <div className="tt-wallet">
-            <span className={`tt-pill ${err ? "bad" : data ? "ok" : ""}`}>
-              <span className="dot" />{err ? "chain unreachable" : data ? `block-synced · ${new Date(data.at).toLocaleTimeString()}` : "reading…"}
+            <span className={`tt-pill ${err && !data ? "bad" : err ? "" : data ? "ok" : ""}`} title={err ?? undefined}>
+              <span className="dot" />{data ? (err ? `last read ${new Date(data.at).toISOString().slice(11, 19)}Z · ${err}` : `synced ${new Date(data.at).toISOString().slice(11, 19)}Z`) : err ? "chain unreachable" : "reading…"}
             </span>
             {w.account ? (
               <>
@@ -343,6 +343,11 @@ export function TradeTerminal() {
                     </button>
                   )}
                 </div>
+                {w.account && w.onChain && !canTrade && (
+                  <div className="tt-warn" style={{ marginTop: 12 }}>
+                    <b>This wallet holds no live session.</b> Only a session granted by the owner can call <code>execute</code>. You can still preview every order, deposit and withdraw. To get a session, <a href="/request-access" style={{ color: "var(--lime)" }}>request vault access</a> or read <a href="/docs/session-keys" style={{ color: "var(--lime)" }}>Session Keys</a>.
+                  </div>
+                )}
                 <div className="tt-note">
                   Executes through <a href={addrUrl(w.executor)} target="_blank" rel="noreferrer">SessionKeyExecutor.execute()</a> → vault → Uniswap V3 pool. Reverts on any cap breach with the rule's name. Real money, unaudited.
                 </div>
